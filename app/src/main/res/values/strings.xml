@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Test</string>
+
+    <string name="title_newgoods_all">综合</string>
+    <string name="title_newgoods_price">价格</string>
+    <string name="title_nregoods_sort">分类</string>
 </resources>

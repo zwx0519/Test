@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200"
+        android:id="@+id/iv_special_img"
+        android:scaleType="fitXY"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_special_title"
+        style="@style/Home_Text"
+        android:text="条纹新风尚"
+        android:layout_marginVertical="@dimen/dp_10"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_special_subtitle"
+        android:text="经典百搭，时尚线条"
+        android:textColor="#686565"
+        android:gravity="center"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_special_price_info"
+        android:text="29元起"
+        android:textColor="#F44336"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#EDE7E7"
+        android:layout_marginTop="@dimen/dp_20"
+        />
+</LinearLayout>
