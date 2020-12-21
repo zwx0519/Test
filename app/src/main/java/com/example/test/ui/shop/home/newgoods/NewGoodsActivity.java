@@ -1,20 +1,25 @@
 package com.example.test.ui.shop.home.newgoods;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Color;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.R;
 import com.example.test.adapter.shop.home.newgoods.NewGoodsListAdapter;
+import com.example.test.adapter.shop.home.newgoods.NewGoodsPopuAdapter;
 import com.example.test.base.BaseActivity;
+import com.example.test.base.BaseAdapter;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.presenter.shop.home.newgoods.NewGoodsPresenter;
@@ -29,7 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implements INewGoods.View  {
+public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implements INewGoods.View {
 
     @BindView(R.id.iv_newgoods_list_img)
     ImageView iv_Img;
@@ -49,6 +54,8 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
     TextView tv_Sort;
     @BindView(R.id.mRlv_NewGoodList)
     RecyclerView mRlv;
+    @BindView(R.id.layout_sort)
+    ConstraintLayout layoutSort;
 
     //是否是新品
     private int isNew = 1;
@@ -64,6 +71,8 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
     private static final String PRICE = "price";//价格
     private static final String CATEGORY = "category";//类别
     private NewGoodsListAdapter newGoodsListAdapter;
+    private List<NewGoodsListBean.DataBeanX.FilterCategoryBean> list;
+    private PopupWindow popupWindow;
 
     @Override
     protected int getLayout() {
@@ -78,6 +87,7 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
     @Override
     @SuppressLint("ResourceType")
     protected void initView() {
+
         order = ASC;
         sort = DEFAULT;
         categoryId = 0;
@@ -86,17 +96,18 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
         tv_All.setTextColor(Color.parseColor(NewGoodsActivity.this.getString(R.color.red)));
     }
 
+
     @Override
     protected void initData() {
-        persenter=new NewGoodsPresenter(this);
+        persenter = new NewGoodsPresenter(this);
         persenter.getNewGoods();
         persenter.getNewGoodsList(getParam());
     }
 
     @SuppressLint("ResourceType")
-    @OnClick({R.id.layout_price,R.id.tv_newgoods_list_all,R.id.tv_newgoods_list_sort})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.layout_price, R.id.tv_newgoods_list_all, R.id.tv_newgoods_list_sort})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.layout_price:
                 int tag = (int) layoutPrice.getTag();
                 if (tag == 0) {
@@ -124,13 +135,50 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
                 resetPriceState();
                 tv_Sort.setTextColor(Color.parseColor(NewGoodsActivity.this.getString(R.color.red)));
                 sort = CATEGORY;
-                persenter.getNewGoodsList(getParam());//调用方法
+                //persenter.getNewGoodsList(getParam());//调用方法
+                if (list != null) {
+                    setPopw();//弹窗
+                }
                 break;
         }
     }
 
+    private void setPopw() {
+        Resources res = getResources();
+        //PopWindow条目布局
+        View inflate = LayoutInflater.from(this).inflate(R.layout.layout_newgoods_popw, null);
+        //设置popu
+        popupWindow = new PopupWindow(inflate, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //控制点击pw范围以外的空间关闭pw  设置Pw以外的空间可以点击
+        popupWindow.setOutsideTouchable(true);
+        //设置背景  告知pw的范围
+        popupWindow.setBackgroundDrawable(null);
+
+        RecyclerView mRlv_popu = inflate.findViewById(R.id.rlv_newgoods_popu);
+        mRlv_popu.setLayoutManager(new GridLayoutManager(this, 5));
+        //适配器
+        NewGoodsPopuAdapter newFirstTabAdapter = new NewGoodsPopuAdapter(this, list);
+        mRlv_popu.setAdapter(newFirstTabAdapter);
+
+        //在按钮的下方弹出  无偏移 第一种方式
+        popupWindow.showAsDropDown(layoutSort);//开启弹窗
+
+        newFirstTabAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                HashMap<String, String> stringStringHashMap = new HashMap<>();
+                stringStringHashMap.put("categoryId",list.get(pos).getId() + "");
+                stringStringHashMap.put("isNew", 1 + "");
+                persenter.getNewGoodsList(stringStringHashMap);//调用方法
+                popupWindow.dismiss();//关闭popupWindow
+            }
+        });
+    }
+
     /**
      * 组装当前的接口参数
+     *
      * @return
      */
     private HashMap<String, String> getParam() {
@@ -181,16 +229,18 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
     @Override
     public void getNewGoodsReturn(NewGoodsBean result) {
         NewGoodsBean.DataBean.BannerInfoBean bannerInfo = result.getData().getBannerInfo();
-        ImageLoaderUtils.loadImage(bannerInfo.getImg_url(),iv_Img);
-        TxtUtils.setTextView(tv_Text,bannerInfo.getName());
+        ImageLoaderUtils.loadImage(bannerInfo.getImg_url(), iv_Img);
+        TxtUtils.setTextView(tv_Text, bannerInfo.getName());
     }
 
     @Override
     public void getNewGoodsListReturn(NewGoodsListBean result) {
         List<NewGoodsListBean.DataBeanX.DataBean> data = result.getData().getData();
+        list = new ArrayList<>();
+        list.addAll(result.getData().getFilterCategory());
         mRlv.setLayoutManager(new GridLayoutManager(this, 2));
-        mRlv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         newGoodsListAdapter = new NewGoodsListAdapter(this, data);
         mRlv.setAdapter(newGoodsListAdapter);
     }
+
 }

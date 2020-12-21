@@ -58,4 +58,7 @@ dependencies {
     // 必要依赖
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation "org.reactivestreams:reactive-streams:1.0.2"//Rxjava2
+
+    //垂直的tablayout
+    implementation 'q.rorbin:VerticalTabLayout:1.2.5'
 }

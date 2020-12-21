@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.shop.type.TypeInfoListActivity"/>
+        <activity android:name=".ui.shop.home.newgoods.NewGoodsListActivity" />
+        <activity android:name=".ui.shop.home.category.CategoryActivity" />
         <activity android:name=".ui.shop.home.newgoods.NewGoodsActivity" />
         <activity android:name=".ui.shop.home.brand.BrandNameActivity" />
         <activity android:name=".ui.shop.home.brand.BrandActivity" />

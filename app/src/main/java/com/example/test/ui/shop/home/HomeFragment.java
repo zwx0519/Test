@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.test.R;
 import com.example.test.adapter.shop.home.brand.BrandAdapter;
-import com.example.test.adapter.shop.home.CategoryAdapter;
+import com.example.test.adapter.shop.home.category.CategoryAdapter;
 import com.example.test.adapter.shop.home.HotGoodsAdapter;
 import com.example.test.adapter.shop.home.newgoods.NewGoodsAdapter;
 import com.example.test.adapter.shop.home.TopicAdapter;
@@ -30,8 +30,10 @@ import com.example.test.model.bean.shop.home.brand.BrandNameBean;
 import com.example.test.presenter.shop.home.HomePresenter;
 import com.example.test.ui.shop.home.brand.BrandActivity;
 import com.example.test.ui.shop.home.brand.BrandNameActivity;
+import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.ui.shop.home.channel.ChannelActivity;
 import com.example.test.ui.shop.home.newgoods.NewGoodsActivity;
+import com.example.test.ui.shop.home.newgoods.NewGoodsListActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.ItemDecoration;
 import com.example.test.utils.TxtUtils;
@@ -208,7 +210,18 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
             categoryAdapter = new CategoryAdapter(mContext, goodsList);
             recyhome.setAdapter(categoryAdapter);
             mLl_Category.addView(inflate);
+
+            categoryAdapter.addListClick(new BaseAdapter.IListClick() {
+                @Override
+                public void itemClick(int pos) {
+                    Intent intent = new Intent(getActivity(), CategoryActivity.class);
+                    MyApp.getMap().put("categoryId",String.valueOf(goodsList.get(pos).getId()));
+                    startActivity(intent);
+                }
+            });
         }
+
+
     }
 
     //TODO 初始化专题精选数据
@@ -227,6 +240,15 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
     private void initNewGoods(List<HomeBean.DataBean.NewGoodsListBean> newGoodsList) {
         this.newGoodsList.addAll(newGoodsList);
         newGoodsAdapter.notifyDataSetChanged();
+
+        newGoodsAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(getActivity(), NewGoodsListActivity.class);
+                MyApp.getMap().put("NewGoodsId",String.valueOf(newGoodsList.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
     //TODO 初始化品牌制造商直供数据

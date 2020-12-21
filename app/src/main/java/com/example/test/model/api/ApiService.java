@@ -4,11 +4,15 @@ import com.example.test.model.bean.shop.home.HomeBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameDetailBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameDetailListBean;
+import com.example.test.model.bean.shop.home.category.CategoryBean;
+import com.example.test.model.bean.shop.home.category.CategoryBottomInfoBean;
 import com.example.test.model.bean.shop.home.channel.ChannelBean;
 import com.example.test.model.bean.shop.home.channel.ChannelTypeBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.special.SpecialBean;
+import com.example.test.model.bean.shop.type.TypeBean;
+import com.example.test.model.bean.shop.type.TypeInfBean;
 
 import java.util.HashMap;
 
@@ -47,4 +51,18 @@ public interface ApiService {
     @GET("api/goods/list")//新品首发列表
     Flowable<NewGoodsListBean> getNewGoodsList(@QueryMap HashMap<String,String> map);
 
+    @GET("api/goods/detail")//居家 商品详情购买页
+    Flowable<CategoryBean> getCategory(@Query("id")String id);
+
+    //商品 详情购买页 底部数据列表 api/goods/related?id=1155000
+    @GET("api/goods/related")
+    Flowable<CategoryBottomInfoBean> getCategoryBottomInfo(@Query("id")String id);
+
+    //分类右边导航
+    @GET("api/catalog/index")
+    Flowable<TypeBean> getHomeType();
+
+    //用来请求当前分类的列表数据
+    @GET("catalog/current")
+    Flowable<TypeInfBean> getTypeInfo(@Query("id") String id);
 }

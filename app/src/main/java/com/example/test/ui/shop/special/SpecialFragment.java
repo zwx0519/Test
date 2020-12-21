@@ -81,34 +81,34 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
         tv_lOading.setVisibility(View.GONE);
     }
 
-//    @OnClick({R.id.btn_previous_page, R.id.btn_next_page})
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_previous_page:
-//                //更换page页 默认第一页
-//                page = ONE;
-//                //显示加载中...      白版
-//                iv_All.setVisibility(View.VISIBLE);
-//                tv_lOading.setVisibility(View.VISIBLE);
-//
-//                //请求数据
-//                presenter.getSpecial(page);
-//
-//                // 返回顶部 自动去最上面
-//                mNsv_Special.fullScroll(ScrollView.FOCUS_UP);
-//                break;
-//            case R.id.btn_next_page:
-//                //更换page页
-//                page = TWO;
-//
-//                //显示加载中...  白板
-//                iv_All.setVisibility(View.VISIBLE);
-//                tv_lOading.setVisibility(View.VISIBLE);
-//                //请求数据
-//                presenter.getSpecial(page);
-//                // 返回顶部
-//                mNsv_Special.fullScroll(ScrollView.FOCUS_UP);
-//                break;
-//        }
-//    }
+    @OnClick({R.id.btn_previous_page, R.id.btn_next_page})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_previous_page:
+                //更换page页 默认第一页
+                page = ONE;
+                //显示加载中...      白版
+                iv_All.setVisibility(View.VISIBLE);
+                tv_lOading.setVisibility(View.VISIBLE);
+
+                //请求数据
+                presenter.getSpecial(page);
+
+                // 返回顶部 自动去最上面
+                mNsv_Special.fullScroll(ScrollView.FOCUS_UP);
+                break;
+            case R.id.btn_next_page:
+                //更换page页
+                page = TWO;
+
+                //显示加载中...  白板
+                iv_All.setVisibility(View.VISIBLE);
+                tv_lOading.setVisibility(View.VISIBLE);
+                //请求数据
+                presenter.getSpecial(page);
+                // 返回顶部
+                mNsv_Special.fullScroll(ScrollView.FOCUS_UP);
+                break;
+        }
+    }
 }
