@@ -10,6 +10,9 @@ import com.example.test.model.bean.shop.home.channel.ChannelBean;
 import com.example.test.model.bean.shop.home.channel.ChannelTypeBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
+import com.example.test.model.bean.shop.login.LoginBean;
+import com.example.test.model.bean.shop.login.RegisterBean;
+import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
 import com.example.test.model.bean.shop.special.SpecialBean;
 import com.example.test.model.bean.shop.type.TypeBean;
 import com.example.test.model.bean.shop.type.TypeInfBean;
@@ -17,7 +20,11 @@ import com.example.test.model.bean.shop.type.TypeInfBean;
 import java.util.HashMap;
 
 import io.reactivex.Flowable;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -65,4 +72,23 @@ public interface ApiService {
     //用来请求当前分类的列表数据
     @GET("catalog/current")
     Flowable<TypeInfBean> getTypeInfo(@Query("id") String id);
+
+    //用户登录
+    @POST("api/auth/login")
+    @FormUrlEncoded
+    Flowable<LoginBean> postLogin(@Field("username") String username, @Field("password") String pw);
+
+    //用户注册
+    @POST("api/auth/register")
+    @FormUrlEncoded
+    Flowable<RegisterBean> postRegister(@Field("username") String username, @Field("password") String pw);
+
+    //添加到购物车
+    @POST("api/cart/add")
+    @FormUrlEncoded
+    Flowable<LoginBean> postAddCar(@FieldMap HashMap<String,String> map);
+
+    //购物车列表
+    @GET("api/cart/index")
+    Flowable<ShoppingCarBean> getShoppingCar();
 }

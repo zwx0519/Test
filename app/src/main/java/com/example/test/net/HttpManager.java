@@ -2,6 +2,7 @@ package com.example.test.net;
 import android.util.Log;
 
 import com.example.test.model.api.ApiService;
+import com.example.test.utils.SpUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,6 +59,8 @@ public class HttpManager {
             Request request = chain.request()
                     .newBuilder()
                     .addHeader("Authorization","APPCODE 964e16aa1ae944e9828e87b8b9fbd30a")
+                    .addHeader("X-Nideshop-Token", SpUtils.getInstance().getString("token"))
+                    .addHeader("Client-Type",SpUtils.getInstance().getString("token"))
                     .build();
             return chain.proceed(request);
         }
@@ -68,7 +71,7 @@ public class HttpManager {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60,TimeUnit.SECONDS)
                 .addInterceptor(new LoggingInterceptor())
-                //.addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new HeaderInterceptor())
                 .build();
         return ok;
     }

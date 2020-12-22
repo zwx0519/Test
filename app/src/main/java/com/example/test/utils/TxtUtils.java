@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.test.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class TxtUtils {
     //文字的封装
@@ -35,13 +36,13 @@ public class TxtUtils {
     }
 
     //手势
-//    public static void setPhotoView(Context context, PhotoView photoView, String image) {
-//        if (photoView != null && !TextUtils.isEmpty(image)) {
-//            Glide.with(context).load(image)
-//                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
-//                    .into(photoView);
-//        }
-//    }
+    public static void setPhotoView(Context context, PhotoView photoView, String image) {
+        if (photoView != null && !TextUtils.isEmpty(image)) {
+            Glide.with(context).load(image)
+                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                    .into(photoView);
+        }
+    }
 }
 
 
