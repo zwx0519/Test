@@ -1,0 +1,16 @@
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision aefac1a4776d8e9a49505c05322371dd7f20e9a2)
++++ build.gradle	(date 1608643605367)
+@@ -16,6 +16,8 @@
+     repositories {
+         google()
+         jcenter()
++        maven { url 'https://jitpack.io' }
++
+     }
+ }
+ 
