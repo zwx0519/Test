@@ -1,5 +1,6 @@
 package com.example.test.ui.shop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,6 +33,7 @@ public class ShopActivity extends AppCompatActivity {
     private Shopping_CartFragment shopping_cartFragment;
     private MeFragment meFragment;
     private Unbinder bind;
+    private int pos;
 
 
     @Override
@@ -91,6 +93,9 @@ public class ShopActivity extends AppCompatActivity {
         mTab.addTab(mTab.newTab().setText("购物车").setIcon(R.drawable.shoppingcart_selector));
         mTab.addTab(mTab.newTab().setText("我的").setIcon(R.drawable.me_selector));
 
+        Intent intent = getIntent();
+        pos = intent.getIntExtra("pos", 0);
+
         //通过tablayout的监听器，实现和fragment的联动
         mTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -141,6 +146,7 @@ public class ShopActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override

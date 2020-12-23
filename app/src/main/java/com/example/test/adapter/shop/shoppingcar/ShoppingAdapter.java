@@ -3,6 +3,7 @@ package com.example.test.adapter.shop.shoppingcar;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,14 +20,15 @@ import java.util.List;
 public class ShoppingAdapter extends BaseAdapter {
 
     private boolean isEdit; //是否是编辑状态
-    private boolean checked;
+
+    private UpdateItem updateItem;
+
+    public void setUpdateItem(UpdateItem item){
+        this.updateItem = item;
+    }
 
     public void setEditState(boolean bool){
         isEdit = bool;
-    }
-
-    public void setChecked(boolean bool) {
-        checked = bool;
     }
 
     public ShoppingAdapter(Context context, List Data) {
@@ -51,6 +53,7 @@ public class ShoppingAdapter extends BaseAdapter {
         NumberSelect change= (NumberSelect) vh.getViewById(R.id.layout_change);
         LinearLayout linear = (LinearLayout) vh.getViewById(R.id.linear);
 
+        //进行显示隐藏
         Name.setVisibility(isEdit? View.GONE:View.VISIBLE);
         Number.setVisibility(isEdit?View.GONE:View.VISIBLE);
         Title.setVisibility(isEdit?View.VISIBLE:View.GONE);
@@ -63,29 +66,47 @@ public class ShoppingAdapter extends BaseAdapter {
         Name.setText(bean.getGoods_name());
         Number.setText(String.valueOf(bean.getNumber()));
 
-//        change.addPage(R.layout.layout_number_change);
-//        change.addChangeNumber(new NumberSelect.ChangeNumber() {
-//            @Override
-//            public void change(int number) {
-//                //修改本地数据得值
-//                bean.setNumber(number);
-//            }
-//        });
+        change.addPage(R.layout.layout_number_change);
+        change.addChangeNumber(new NumberSelect.ChangeNumber() {
+            @Override
+            public void change(int number) {
+                //修改本地数据得值
+                bean.setNumber(number);
+                if(updateItem != null){
+                    updateItem.updateItemDate(bean);
+                }
+            }
+        });
 
+        checkBox.setTag(bean.getId());
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(iItemViewClick != null){
+                    int id = (int) buttonView.getTag();
+                    iItemViewClick.itemViewClick(id,isChecked);//接口回调
+                }
+            }
+        });
 
-        if (isEdit) {
-            Number.setVisibility(View.GONE);
-            Title.setVisibility(View.VISIBLE);
-            linear.setVisibility(View.VISIBLE);
+//        if (isEdit) {
+//            Number.setVisibility(View.GONE);
+//            Title.setVisibility(View.VISIBLE);
+//            linear.setVisibility(View.VISIBLE);
+//
+//        } else {
+//            Number.setVisibility(View.VISIBLE);
+//            Title.setVisibility(View.GONE);
+//            linear.setVisibility(View.GONE);
+//        }
+//
+//        if (checked) {
+//            checkBox.isSelected();
+//        }
+    }
 
-        } else {
-            Number.setVisibility(View.VISIBLE);
-            Title.setVisibility(View.GONE);
-            linear.setVisibility(View.GONE);
-        }
-
-        if (checked) {
-            checkBox.isSelected();
-        }
+    //修改条目
+    public interface UpdateItem{
+        void updateItemDate(ShoppingCarBean.DataBean.CartListBean data);
     }
 }

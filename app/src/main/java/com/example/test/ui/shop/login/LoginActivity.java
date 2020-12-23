@@ -129,9 +129,14 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
         String username = et_Username.getText().toString();
         String pw = et_Pw.getText().toString();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pw)){
-            persenter.postLogin(username, pw);
+            String token=SpUtils.getInstance().getString("token");
+            if(token!=null){
+                persenter.postLogin(username, pw);
+            }else {
+                ToastUtils.s(this,getString(R.string.tips_login));
+            }
         }else{
-            ToastUtils.s(this,getString(R.string.tips_login));
+            ToastUtils.s(this,getString(R.string.tips_login_input));
         }
     }
 

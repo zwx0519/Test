@@ -12,12 +12,16 @@ import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.login.LoginBean;
 import com.example.test.model.bean.shop.login.RegisterBean;
+import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
+import com.example.test.model.bean.shop.shoppingcar.DeleteShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
+import com.example.test.model.bean.shop.shoppingcar.UpdateShoppingCarBean;
 import com.example.test.model.bean.shop.special.SpecialBean;
 import com.example.test.model.bean.shop.type.TypeBean;
 import com.example.test.model.bean.shop.type.TypeInfBean;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Field;
@@ -86,9 +90,21 @@ public interface ApiService {
     //添加到购物车
     @POST("api/cart/add")
     @FormUrlEncoded
-    Flowable<LoginBean> postAddCar(@FieldMap HashMap<String,String> map);
+    Flowable<AddShoppingCarBean> postAddShoppingCar(@FieldMap HashMap<String,String> map);
+
+    //更新购物车的数据
+    @POST("api/cart/update")//  goodsId=1035006 number=1   productId=47     // 1116033   1   171
+    @FormUrlEncoded
+    Flowable<UpdateShoppingCarBean> postUpdateShoppingCar(@FieldMap Map<String,String> map);
+
+    //删除购物车数据
+    @POST("api/cart/delete")
+    @FormUrlEncoded
+    Flowable<DeleteShoppingCarBean> postDeleteShoppingCar(@Field("productIds") String productIds);
 
     //购物车列表
     @GET("api/cart/index")
     Flowable<ShoppingCarBean> getShoppingCar();
+
+
 }

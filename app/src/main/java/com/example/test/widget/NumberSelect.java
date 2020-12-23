@@ -44,21 +44,25 @@ public class NumberSelect extends LinearLayout implements View.OnClickListener {
     }
 
     public void addPage(int layout){
+        removeAllViews();
         View view = LayoutInflater.from(getContext()).inflate(layout,this,false);
         addView(view);
         txtReduce = view.findViewById(R.id.txt_reduce);
         txtNumber = view.findViewById(R.id.txt_number);
         txtAdd = view.findViewById(R.id.txt_add);
+        txtReduce.setOnClickListener(this);
+        txtAdd.setOnClickListener(this);
+        initTxtNumber();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.txt_reduce:
+            case R.id.txt_reduce://减少数量
                 numberReduce();
                 break;
-            case R.id.txt_add:
-                numberAdd();
+            case R.id.txt_add://添加数量
+                numberAdd(); //对数量进行修改
                 break;
         }
     }
@@ -80,6 +84,12 @@ public class NumberSelect extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    //对数量进行修改
+    private void initTxtNumber() {
+        if(txtNumber != null){
+            txtNumber.setText(String.valueOf(getNumber()));
+        }
+    }
 
     /**
      * 接口回调

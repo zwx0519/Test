@@ -4,10 +4,14 @@ import com.example.test.base.BaseModel;
 import com.example.test.model.api.Callback;
 import com.example.test.model.bean.shop.home.category.CategoryBean;
 import com.example.test.model.bean.shop.home.category.CategoryBottomInfoBean;
+import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
 import com.example.test.net.CommonSubscriber;
 import com.example.test.net.HttpManager;
 import com.example.test.utils.RxUtils;
 import com.example.test.view.shop.home.category.ICategory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategoryModel extends BaseModel implements ICategory.Model {
 

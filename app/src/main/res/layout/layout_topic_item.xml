@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp_300"
     android:layout_height="match_parent"
-    android:layout_margin="20dp">
-
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/iv_topic_img"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_160" />
+        android:layout_height="@dimen/dp_160"
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/tv_topic_name"
@@ -16,17 +16,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_topic_img"
+        android:layout_marginTop="@dimen/dp_10"
         android:text="111" />
 
     <TextView
         android:id="@+id/tv_topic_price"
+        style="@style/Home_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_topic_img"
         android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_toRightOf="@id/tv_topic_name"
         android:text="111"
-        style="@style/Home_Text"
         android:textColor="#D50000" />
 
     <TextView
@@ -34,5 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_topic_name"
+        android:layout_marginTop="@dimen/dp_6"
         android:textSize="@dimen/sp_10" />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.test.ui.shop.home.category;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.example.test.adapter.shop.home.category.CategoryButtomInfoAdapter;
 import com.example.test.adapter.shop.home.category.CategoryIssueAdapter;
 import com.example.test.adapter.shop.home.category.CategoryParameterAdapter;
 import com.example.test.base.BaseAdapter;
+import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
+import com.example.test.ui.shop.ShopActivity;
 import com.example.test.ui.shop.home.category.bigpic.BigImageActivity;
 import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
@@ -123,6 +126,9 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
     private CategoryBean.DataBeanX.InfoBean info;
     private PopupWindow popupWindow;
 
+    private Intent intent;
+    private int id;
+    private List<CategoryBean.DataBeanX.ProductListBean> productList;
 
     @Override
     protected int getLayout() {
@@ -141,6 +147,10 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         } else {
             isSelect = false;
         }
+
+        //广播
+        intent = new Intent();
+        intent.setAction("shu");
     }
 
     @OnClick({R.id.fl_collect, R.id.fl_car, R.id.tv_category_buy, R.id.tv_category_addCar})
@@ -148,16 +158,16 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         if (!TextUtils.isEmpty(SpUtils.getInstance().getString("token"))) {
             switch (view.getId()) {
                 case R.id.fl_collect:
-
                     break;
                 case R.id.fl_car:
-
+                    Intent intent = new Intent(CategoryActivity.this, ShopActivity.class);
+                    intent.putExtra("pos",3);
+                    startActivity(intent);
                     break;
                 case R.id.tv_category_buy:
 
                     break;
                 case R.id.tv_category_addCar:
-
                     //TODO 点击加入购物车弹出购物车弹框
                     if(isSelect){ //购物车进行显示隐藏
                         initPopu();//添加时
@@ -167,14 +177,27 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                     break;
             }
         } else {
-            Intent intent = new Intent(CategoryActivity.this, LoginActivity.class);
-            startActivity(intent);
+            Intent i = new Intent(CategoryActivity.this, LoginActivity.class);
+            startActivity(i);
         }
     }
 
     //TODO 添加成功关闭弹窗
     private void initPopu_ok() {
         popupWindow.dismiss();
+
+        //添加购物车goodsId
+        int goodsId = info.getId();
+        intent.putExtra("goodsId",goodsId);
+        sendBroadcast(intent);//发送广播
+        //添加购物车number
+        String number = tv_count.getText().toString();
+        intent.putExtra("number",number);
+        sendBroadcast(intent);
+        //添加购物车productId
+        int productId = productList.get(0).getId();
+        intent.putExtra("productId",productId);
+        sendBroadcast(intent);
 
         View join_view = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.layout_shoppingcar_popu_ok, null);
         PopupWindow popupWindow1 = new PopupWindow(join_view, 200, 200);
@@ -219,8 +242,8 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         tv_count = join_view.findViewById(R.id.tv_count_shoppingcar_pop);
         TextView tv_back = join_view.findViewById(R.id.tv_return_shopping_pop);
 
-        Glide.with(CategoryActivity.this).load(info.getList_pic_url()).into(image_pop);
-        price_pop.setText("价格:  ￥"+ info.getRetail_price() + "");
+        Glide.with(CategoryActivity.this).load(this.info.getList_pic_url()).into(image_pop);
+        price_pop.setText("价格:  ￥"+ this.info.getRetail_price() + "");
         count = 1;
 
         ClickListener clickListener = new ClickListener();
@@ -290,6 +313,8 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
 
     @Override
     protected void initData() {
+        persenter = new CategoryPresenter(this);
+
         //接收ID
         String categoryId = (String) MyApp.getMap().get("categoryId");
         if (categoryId != null) {
@@ -321,9 +346,9 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
             initParameter(result.getData().getAttribute());
 
             info = result.getData().getInfo();
+            productList = result.getData().getProductList();
         }
     }
-
 
     //TODO H5展示图片 大图
     private void showImage(String goods_desc) {
@@ -411,6 +436,14 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
 
     }
 
+    //TODO 商品 详情购买页 底部数据列表
+    @Override
+    public void getCategoryBottomInfoReturn(CategoryBottomInfoBean result) {
+        List<CategoryBottomInfoBean.DataBean.GoodsListBean> data = result.getData().getGoodsList();
+        goodsList.addAll(data);
+        categoryButtomInfoAdapter.notifyDataSetChanged();
+    }
+
     //TODO Banner下面的展示数据
     private void initInfo(CategoryBean.DataBeanX.InfoBean info) {
         tv_title.setText(info.getName());
@@ -447,13 +480,4 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         Log.i("TAG", content);
         //webView.loadDataWithBaseURL("about:blank", content, "text/html", "utf-8", null);
     }
-
-    //TODO 商品 详情购买页 底部数据列表
-    @Override
-    public void getCategoryBottomInfoReturn(CategoryBottomInfoBean result) {
-        List<CategoryBottomInfoBean.DataBean.GoodsListBean> data = result.getData().getGoodsList();
-        goodsList.addAll(data);
-        categoryButtomInfoAdapter.notifyDataSetChanged();
-    }
-
 }

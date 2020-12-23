@@ -13,6 +13,8 @@
     <!-- me - login -->
     <string name="tips_login">请输入正确的用户名和密码</string>
     <string name="hint_login_username">请输入用户名</string>
+    <string name="tips_login_input">用户名和密码不能为空</string>
+
     <string name="hint_login_pw">请输入密码</string>
     <string name="tips_register">与注册的用户名或密码不符</string>
     <string name="tips_ok_login">已经登录</string>

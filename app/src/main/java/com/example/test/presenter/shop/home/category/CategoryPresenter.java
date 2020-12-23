@@ -4,8 +4,12 @@ import com.example.test.base.BasePresenter;
 import com.example.test.model.api.Callback;
 import com.example.test.model.bean.shop.home.category.CategoryBean;
 import com.example.test.model.bean.shop.home.category.CategoryBottomInfoBean;
+import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
 import com.example.test.model.shop.home.category.CategoryModel;
 import com.example.test.view.shop.home.category.ICategory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategoryPresenter extends BasePresenter<ICategory.View> implements ICategory.Persenter{
     ICategory.View view;
@@ -51,4 +55,6 @@ public class CategoryPresenter extends BasePresenter<ICategory.View> implements 
             });
         }
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,14 +84,21 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
                 //密码大于6位
                 if (pwd.length() >= 6) {
                     //验证码不为空
-                    if (!TextUtils.isEmpty(ver)) {
+                    if (ver.equals("") || ver.length() != 0) {
+                        // 取出sp中存入的username
+                        String string = SpUtils.getInstance().getString(name);
+                        Log.e("TAG", "initRegist: "+string );
+
                         //获得服务器的token
-                        String token = SpUtils.getInstance().getString("token");
-                        //判断输入的用户名密码是否存在
-                        if (name.equals(token) && pwd.equals(token)) {
-                            ToastUtils.s(this, getString(R.string.tips_regist_re));
-                        } else {
-                            //请求数据
+                        //String token = SpUtils.getInstance().getString("token");
+                        //判断sp中是否有存入的username
+                        if (!TextUtils.isEmpty(string)){     //如果有存入的
+                            //用户名已经注册
+                            ToastUtils.s(this,getString(R.string.tips_regist_re));
+                            return;
+                        }else{     //没有存入的
+                            //1.注册
+                            //2.将用户名最为key 密钥（token）作为value 存入sp (sp.....set)
                             persenter.postRegister(name, pwd);
                         }
                     } else {
@@ -115,17 +123,18 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
 
     @Override
     protected void initData() {
-
+        persenter = new RegisterPresenter(this);
     }
 
 
     @Override
     public void postRegisterReturn(RegisterBean result) {
-        String token = result.getData().getToken();
+        String token = result.getData().getToken().toString();
 
         //如果获得token不为空
         if(!TextUtils.isEmpty(token)){
             //保存到sp中
+            SpUtils.getInstance().setValue(name, token);
             SpUtils.getInstance().setValue("token", token);
             SpUtils.getInstance().setValue("uid",result.getData().getUserInfo().getUid());
 
