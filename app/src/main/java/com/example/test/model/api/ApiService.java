@@ -12,6 +12,7 @@ import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.login.LoginBean;
 import com.example.test.model.bean.shop.login.RegisterBean;
+import com.example.test.model.bean.shop.me.address.AddressCityBean;
 import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.DeleteShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
@@ -29,6 +30,7 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -106,5 +108,6 @@ public interface ApiService {
     @GET("api/cart/index")
     Flowable<ShoppingCarBean> getShoppingCar();
 
-
+    @GET("api/region/list")
+    Flowable<AddressCityBean> getAddressCity(@Path("parentId")int parentId);
 }

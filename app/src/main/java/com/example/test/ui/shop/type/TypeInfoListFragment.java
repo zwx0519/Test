@@ -1,5 +1,6 @@
 package com.example.test.ui.shop.type;
 
+import android.content.Intent;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -7,10 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.R;
 import com.example.test.adapter.shop.home.channel.ChannelAdapter;
+import com.example.test.app.MyApp;
+import com.example.test.base.BaseAdapter;
 import com.example.test.base.BaseFragment;
 import com.example.test.model.bean.shop.home.channel.ChannelBean;
 import com.example.test.model.bean.shop.home.channel.ChannelTypeBean;
 import com.example.test.presenter.shop.home.channel.ChannelPresenter;
+import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.utils.TxtUtils;
 import com.example.test.view.shop.home.channel.IChannel;
 
@@ -52,6 +56,15 @@ public class TypeInfoListFragment extends BaseFragment<IChannel.Presenter> imple
         list = new ArrayList<>();
         channelAdapter = new ChannelAdapter(mContext, list);
         mRlv.setAdapter(channelAdapter);
+
+        channelAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(getActivity(), CategoryActivity.class);
+                MyApp.getMap().put("categoryId",String.valueOf(list.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

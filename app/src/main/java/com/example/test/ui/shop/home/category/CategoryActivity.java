@@ -1,6 +1,5 @@
 package com.example.test.ui.shop.home.category;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,18 +26,19 @@ import com.example.test.adapter.shop.home.category.CategoryBigImageAdapter;
 import com.example.test.adapter.shop.home.category.CategoryButtomInfoAdapter;
 import com.example.test.adapter.shop.home.category.CategoryIssueAdapter;
 import com.example.test.adapter.shop.home.category.CategoryParameterAdapter;
-import com.example.test.base.BaseAdapter;
-import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
-import com.example.test.ui.shop.ShopActivity;
-import com.example.test.ui.shop.home.category.bigpic.BigImageActivity;
 import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
+import com.example.test.base.BaseAdapter;
 import com.example.test.model.bean.shop.home.category.CategoryBean;
 import com.example.test.model.bean.shop.home.category.CategoryBottomInfoBean;
+import com.example.test.model.bean.shop.me.collect.Favorites;
 import com.example.test.presenter.shop.home.category.CategoryPresenter;
+import com.example.test.ui.shop.ShopActivity;
+import com.example.test.ui.shop.home.category.bigpic.BigImageActivity;
 import com.example.test.ui.shop.login.LoginActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.ItemDecoration;
+import com.example.test.utils.Realms;
 import com.example.test.utils.SpUtils;
 import com.example.test.utils.ToastUtils;
 import com.example.test.view.shop.home.category.ICategory;
@@ -53,10 +53,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public class CategoryActivity extends BaseActivity<ICategory.Persenter> implements ICategory.View {
-
+    public static final int RECOMMEND_CAR = 1000; //打开购物车的指令
     //    @BindView(R.id.webView_category)
 //    WebView webView;
     @BindView(R.id.mRlv_category_all)
@@ -93,6 +95,13 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
     ConstraintLayout mCl_assess;
     @BindView(R.id.mCl_category_comment)
     ConstraintLayout mCl_comment;
+    @BindView(R.id.mV_category_assess)
+    View mV_Assess;
+    @BindView(R.id.mV_category_comment)
+    View mV_Comment;
+    @BindView(R.id.iv_category_count)
+    ImageView iv_Count;
+
     private boolean isSelect = false;
 
     private String h5 = "<html>\n" +
@@ -127,7 +136,6 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
     private PopupWindow popupWindow;
 
     private Intent intent;
-    private int id;
     private List<CategoryBean.DataBeanX.ProductListBean> productList;
 
     @Override
@@ -153,23 +161,34 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         intent.setAction("shu");
     }
 
-    @OnClick({R.id.fl_collect, R.id.fl_car, R.id.tv_category_buy, R.id.tv_category_addCar})
+    @OnClick({R.id.fl_collect, R.id.fl_car, R.id.tv_category_buy, R.id.tv_category_addCar,R.id.iv_category_count})
     public void onClick(View view) {
         if (!TextUtils.isEmpty(SpUtils.getInstance().getString("token"))) {
             switch (view.getId()) {
                 case R.id.fl_collect:
+                    initCollect();
                     break;
                 case R.id.fl_car:
-                    Intent intent = new Intent(CategoryActivity.this, ShopActivity.class);
-                    intent.putExtra("pos",3);
-                    startActivity(intent);
+                    setResult(RECOMMEND_CAR);
+                    finish();
+//                    Intent intent = new Intent(CategoryActivity.this, ShopActivity.class);
+//                    intent.putExtra("pos", 3);
+//                    startActivity(intent);
                     break;
                 case R.id.tv_category_buy:
 
                     break;
                 case R.id.tv_category_addCar:
                     //TODO 点击加入购物车弹出购物车弹框
-                    if(isSelect){ //购物车进行显示隐藏
+                    if (isSelect) { //购物车进行显示隐藏
+                        initPopu();//添加时
+                    } else {
+                        initPopu_ok();//添加成功关闭弹窗
+                    }
+                    break;
+                case R.id.iv_category_count:
+                    //TODO 点击加入购物车弹出购物车弹框
+                    if (isSelect) { //购物车进行显示隐藏
                         initPopu();//添加时
                     }else {
                         initPopu_ok();//添加成功关闭弹窗
@@ -182,21 +201,36 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         }
     }
 
+    private void initCollect() {
+        Realms.getRealm(CategoryActivity.this).executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Favorites favorites = realm.createObject(Favorites.class);
+                favorites.setName(info.getName());
+                favorites.setPic(info.getList_pic_url());
+                favorites.setPrice(info.getRetail_price());
+                favorites.setTitle(info.getGoods_brief());
+
+                Log.e("TAG", "execute: "+info.getName()+info.getList_pic_url() );
+            }
+        });
+    }
+
     //TODO 添加成功关闭弹窗
     private void initPopu_ok() {
         popupWindow.dismiss();
 
         //添加购物车goodsId
         int goodsId = info.getId();
-        intent.putExtra("goodsId",goodsId);
+        intent.putExtra("goodsId", goodsId);
         sendBroadcast(intent);//发送广播
         //添加购物车number
         String number = tv_count.getText().toString();
-        intent.putExtra("number",number);
+        intent.putExtra("number", number);
         sendBroadcast(intent);
         //添加购物车productId
         int productId = productList.get(0).getId();
-        intent.putExtra("productId",productId);
+        intent.putExtra("productId", productId);
         sendBroadcast(intent);
 
         View join_view = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.layout_shoppingcar_popu_ok, null);
@@ -215,14 +249,15 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        popupWindow1.dismiss();
+                        popupWindow1.dismiss();//关闭弹窗
+                        //关闭阴影
                         WindowManager.LayoutParams attributes = getWindow().getAttributes();
                         attributes.alpha = 1f;
                         getWindow().setAttributes(attributes);
                     }
                 });
             }
-        },1000,2000);
+        }, 1000, 2000);
 
         isSelect = true;
     }
@@ -243,7 +278,7 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         TextView tv_back = join_view.findViewById(R.id.tv_return_shopping_pop);
 
         Glide.with(CategoryActivity.this).load(this.info.getList_pic_url()).into(image_pop);
-        price_pop.setText("价格:  ￥"+ this.info.getRetail_price() + "");
+        price_pop.setText("价格:  ￥" + this.info.getRetail_price() + "");
         count = 1;
 
         ClickListener clickListener = new ClickListener();
@@ -257,7 +292,7 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                 popupWindow.dismiss();//关闭弹窗
             }
         });
-        isSelect=false;
+        isSelect = false;
     }
 
     //TODO 点击+ -的时候对里面的数字进行修改
@@ -417,7 +452,8 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         if (data != null) {
             mCl_assess.setVisibility(View.VISIBLE);//进行显示评论
             mCl_comment.setVisibility(View.VISIBLE);//显示商品文字
-
+            mV_Assess.setVisibility(View.VISIBLE);
+            mV_Comment.setVisibility(View.VISIBLE);
             //时间
             tv_head_date.setText(data.getAdd_time());
             //名字
@@ -426,9 +462,13 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
             tv_head_desc.setText(data.getContent());
             //底部图片
             if (data.getPic_list() != null && data.getPic_list().size() > 0) {
+
                 ImageLoaderUtils.loadImage(data.getPic_list().get(0).getPic_url(), iv_img);
             } else {
+                mCl_assess.setVisibility(View.GONE);//进行隐藏评论
                 mCl_comment.setVisibility(View.GONE);//隐藏下面的图片
+                mV_Assess.setVisibility(View.GONE);//进行线
+                mV_Comment.setVisibility(View.GONE);
             }
         } else {
             Log.i("TAG", "该详情没有评论");

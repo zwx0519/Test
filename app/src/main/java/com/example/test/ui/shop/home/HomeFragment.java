@@ -33,7 +33,6 @@ import com.example.test.ui.shop.home.brand.BrandNameActivity;
 import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.ui.shop.home.channel.ChannelActivity;
 import com.example.test.ui.shop.home.newgoods.NewGoodsActivity;
-import com.example.test.ui.shop.home.newgoods.NewGoodsListActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.ItemDecoration;
 import com.example.test.utils.TxtUtils;
@@ -211,6 +210,7 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
             recyhome.setAdapter(categoryAdapter);
             mLl_Category.addView(inflate);
 
+            //共用布局
             categoryAdapter.addListClick(new BaseAdapter.IListClick() {
                 @Override
                 public void itemClick(int pos) {
@@ -241,11 +241,12 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
         this.newGoodsList.addAll(newGoodsList);
         newGoodsAdapter.notifyDataSetChanged();
 
+        //共用布局
         newGoodsAdapter.addListClick(new BaseAdapter.IListClick() {
             @Override
             public void itemClick(int pos) {
-                Intent intent = new Intent(getActivity(), NewGoodsListActivity.class);
-                MyApp.getMap().put("NewGoodsId",String.valueOf(newGoodsList.get(pos).getId()));
+                Intent intent = new Intent(getActivity(), CategoryActivity.class);
+                MyApp.getMap().put("categoryId",String.valueOf(newGoodsList.get(pos).getId()));
                 startActivity(intent);
             }
         });

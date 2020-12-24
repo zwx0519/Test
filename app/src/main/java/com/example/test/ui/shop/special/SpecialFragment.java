@@ -31,7 +31,7 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
     @BindView(R.id.iv_special_all)
     ImageView iv_All;
     @BindView(R.id.tv_special_oading)
-    TextView tv_lOading;
+    TextView tv_ading;
     @BindView(R.id.btn_previous_page)
     RadioButton btn_PreviousPage;
     @BindView(R.id.btn_next_page)
@@ -78,7 +78,7 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
 
         //隐藏加载中...
         iv_All.setVisibility(View.GONE);
-        tv_lOading.setVisibility(View.GONE);
+        tv_ading.setVisibility(View.GONE);
     }
 
     @OnClick({R.id.btn_previous_page, R.id.btn_next_page})
@@ -89,7 +89,7 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
                 page = ONE;
                 //显示加载中...      白版
                 iv_All.setVisibility(View.VISIBLE);
-                tv_lOading.setVisibility(View.VISIBLE);
+                tv_ading.setVisibility(View.VISIBLE);
 
                 //请求数据
                 presenter.getSpecial(page);
@@ -103,7 +103,7 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
 
                 //显示加载中...  白板
                 iv_All.setVisibility(View.VISIBLE);
-                tv_lOading.setVisibility(View.VISIBLE);
+                tv_ading.setVisibility(View.VISIBLE);
                 //请求数据
                 presenter.getSpecial(page);
                 // 返回顶部

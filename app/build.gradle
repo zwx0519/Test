@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'realm-android'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -64,4 +64,9 @@ dependencies {
 
     //图片缩放
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    //侧滑删除
+    implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
+
+
 }

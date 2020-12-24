@@ -6,26 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.shop.ShopActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
+            style="@style/Home_Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Home_Text"
-            android:text="仿网易严选"
-            />
+            android:text="仿网易严选" />
     </androidx.appcompat.widget.Toolbar>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/mRl_shop"
-        />
+
+<!--    <com.example.test.utils.CustomViewPager-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:id="@+id/mVp_shop"-->
+<!--        />-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/mRl_shop"
+            />
     <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/mTab_shop"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

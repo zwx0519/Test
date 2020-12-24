@@ -101,6 +101,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/iv_category_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
@@ -149,11 +150,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
+                android:id="@+id/mV_category_assess"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginLeft="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_5"
-                android:background="@color/gray_word" />
+                android:background="@color/gray_word"
+                android:visibility="gone"/>
 
             <!--评论内容-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -220,9 +223,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
+                android:id="@+id/mV_category_comment"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_5"
-                android:background="@color/gray_word" />
+                android:background="@color/gray_word"
+                android:visibility="gone"/>
             <!--商品参数区域-->
             <LinearLayout
                 android:layout_width="match_parent"

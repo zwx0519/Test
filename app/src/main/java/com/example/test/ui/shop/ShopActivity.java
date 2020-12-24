@@ -3,19 +3,28 @@ package com.example.test.ui.shop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.test.R;
 import com.example.test.ui.shop.home.HomeFragment;
+import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.ui.shop.me.MeFragment;
 import com.example.test.ui.shop.shoppingcart.Shopping_CartFragment;
 import com.example.test.ui.shop.special.SpecialFragment;
 import com.example.test.ui.shop.type.TypeFragment;
+import com.example.test.utils.CustomViewPager;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +34,11 @@ public class ShopActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.mRl_shop)
+    RelativeLayout mRl;
     private TabLayout mTab;
     private FragmentManager mFm;
+    //private CustomViewPager mVp;
     private HomeFragment homeFragment;
     private SpecialFragment specialFragment;
     private TypeFragment typeFragment;
@@ -34,7 +46,8 @@ public class ShopActivity extends AppCompatActivity {
     private MeFragment meFragment;
     private Unbinder bind;
     private int pos;
-
+    private String[] str = {"首页", "专题", "分类", "购物车", "我的"};
+    private ArrayList<Fragment> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +55,20 @@ public class ShopActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop);
         bind = ButterKnife.bind(this);
         initView();
+        //initVp();
         initFragment();//碎片
         initTab();//Tab添加
     }
 
     private void initView() {
+        homeFragment = new HomeFragment();
+        specialFragment = new SpecialFragment();
+        typeFragment = new TypeFragment();
+        shopping_cartFragment = new Shopping_CartFragment();
+        meFragment = new MeFragment();
+
         mTab = (TabLayout) findViewById(R.id.mTab_shop);
+        //mVp = (CustomViewPager) findViewById(R.id.mVp_shop);
         //给左边添加图片
         toolbar.setNavigationIcon(R.mipmap.b2);
         //Toolbar和Activity结合
@@ -59,16 +80,49 @@ public class ShopActivity extends AppCompatActivity {
                 finishAndRemoveTask();
             }
         });
+
+        //禁止滑动
+        //mVp.setScanScroll(false);
+    }
+
+    private void initVp() {
+        //准备fragment
+
+        list = new ArrayList<>();
+        list.add(homeFragment);
+        list.add(specialFragment);
+        list.add(typeFragment);
+        list.add(shopping_cartFragment);
+        list.add(meFragment);
+
+
+        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager());
+        //mVp.setAdapter(vpAdapter);
+       // mTab.setupWithViewPager(mVp);
+
+        mTab.getTabAt(0).setIcon(R.drawable.home_selector);
+        mTab.getTabAt(1).setIcon(R.drawable.special_selector);
+        mTab.getTabAt(2).setIcon(R.drawable.type_selector);
+        mTab.getTabAt(3).setIcon(R.drawable.shoppingcart_selector);
+        mTab.getTabAt(4).setIcon(R.drawable.me_selector);
+
+
+//        Intent intent = getIntent();
+//        pos = intent.getIntExtra("pos", 0);
+//        mVp.setCurrentItem(pos);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //回调打开购物车
+        if (resultCode == CategoryActivity.RECOMMEND_CAR) {
+            mTab.getTabAt(3).select();
+            //mVp.setCurrentItem(3);
+        }
     }
 
     private void initFragment() {
-        //准备fragment
-        homeFragment = new HomeFragment();
-        specialFragment = new SpecialFragment();
-        typeFragment = new TypeFragment();
-        shopping_cartFragment = new Shopping_CartFragment();
-        meFragment = new MeFragment();
-
         //得到fragment管理器
         mFm = getSupportFragmentManager();
         //放入布局管理器
@@ -92,9 +146,6 @@ public class ShopActivity extends AppCompatActivity {
         mTab.addTab(mTab.newTab().setText("分类").setIcon(R.drawable.type_selector));
         mTab.addTab(mTab.newTab().setText("购物车").setIcon(R.drawable.shoppingcart_selector));
         mTab.addTab(mTab.newTab().setText("我的").setIcon(R.drawable.me_selector));
-
-        Intent intent = getIntent();
-        pos = intent.getIntExtra("pos", 0);
 
         //通过tablayout的监听器，实现和fragment的联动
         mTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -147,6 +198,30 @@ public class ShopActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    class VpAdapter extends FragmentStatePagerAdapter {
+        public VpAdapter(@NonNull FragmentManager fm) {
+            super(fm);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return str[position];
+        }
     }
 
     @Override
