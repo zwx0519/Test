@@ -73,14 +73,13 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
 
     @Override
     protected void initData() {
-
+        persenter = new LoginPresenter(this);
     }
 
     @Override
     public void postLoginReturn(LoginBean result) {
         token = result.getData().getToken();
-        Log.e("TAG", "getMeLoginReturn: "+token );
-        if (!TextUtils.isEmpty(result.getData().getToken())) {
+        if (!TextUtils.isEmpty(token)) {
             SpUtils.getInstance().setValue("token", result.getData().getToken());
             SpUtils.getInstance().setValue("uid", result.getData().getUserInfo().getUid());
 

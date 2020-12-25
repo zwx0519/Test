@@ -87,7 +87,6 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
                     if (ver.equals("") || ver.length() != 0) {
                         // 取出sp中存入的username
                         String string = SpUtils.getInstance().getString(name);
-                        Log.e("TAG", "initRegist: "+string );
 
                         //获得服务器的token
                         //String token = SpUtils.getInstance().getString("token");
@@ -115,6 +114,7 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
         }
 
     }
+
 
     @Override
     protected IRegister.Presenter createPersenter() {
