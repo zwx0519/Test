@@ -6,12 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 
 import com.example.test.R;
 import com.example.test.base.BaseFragment;
 import com.example.test.base.IBasePersenter;
+import com.example.test.ui.shop.ShopActivity;
 import com.example.test.ui.shop.login.LoginActivity;
 import com.example.test.ui.shop.me.address.AddressActivity;
 import com.example.test.ui.shop.me.collect.FavoritesActivity;
@@ -41,7 +42,9 @@ public class MeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+//        ShopActivity shopActivity = new ShopActivity();
+//        Toolbar toolbar=shopActivity.findViewById(R.id.toolbar);
+//        toolbar.setVisibility(View.GONE);
     }
 
     @OnClick({R.id.tv_my_login, R.id.ll_my_address,R.id.ll_five_collect})

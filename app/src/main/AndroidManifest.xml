@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.shop.me.address.Address_AddActivity"></activity>
+        <activity android:name=".ui.shop.special.SpecialDetailsActivity"/>
+        <activity android:name=".ui.shop.me.address.Address_AddActivity" />
         <activity android:name=".ui.shop.me.address.AddressActivity" />
         <activity android:name=".ui.shop.shoppingcart.OrderFormActivity" />
         <activity android:name=".ui.shop.login.RegisterActivity" />
@@ -30,7 +31,7 @@
         <activity android:name=".ui.shop.home.brand.BrandNameDetailActivity" />
         <activity android:name=".ui.shop.home.channel.ChannelActivity" />
         <activity android:name=".ui.shop.ShopActivity" />
-        <activity android:name=".ui.shop.me.collect.FavoritesActivity"/>
+        <activity android:name=".ui.shop.me.collect.FavoritesActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

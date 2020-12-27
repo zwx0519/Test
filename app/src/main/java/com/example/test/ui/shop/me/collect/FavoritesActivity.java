@@ -23,7 +23,7 @@ import io.realm.RealmResults;
 public class FavoritesActivity extends BaseActivity {
 
     @BindView(R.id.recycler_favorites)
-    RecyclerView recyclerFavorites;
+    RecyclerView mRlv;
 
     private List<Favorites> list;
     private FavoritesAdapter favoritesAdapter;
@@ -41,16 +41,17 @@ public class FavoritesActivity extends BaseActivity {
     @Override
     protected void initView() {
         list = new ArrayList<>();
-        recyclerFavorites.setLayoutManager(new LinearLayoutManager(this));
-        favoritesAdapter = new FavoritesAdapter(this,list);
-        recyclerFavorites.setAdapter(favoritesAdapter);
-        recyclerFavorites.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRlv.setLayoutManager(new LinearLayoutManager(this));
+        mRlv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
 
+        favoritesAdapter = new FavoritesAdapter(this,list);
+        mRlv.setAdapter(favoritesAdapter);
+
+        //查询保存到数据库的值
         RealmResults<Favorites> all = Realms.getRealm(FavoritesActivity.this).where(Favorites.class).findAll();
         //list.clear();
         list.addAll(all);
         favoritesAdapter.notifyDataSetChanged();
-
     }
 
     @Override

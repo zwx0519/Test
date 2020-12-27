@@ -1,6 +1,8 @@
 package com.example.test.ui.shop.shoppingcart;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.example.test.R;
 import com.example.test.adapter.shop.me.address.AddressAdapter;
 import com.example.test.app.MyApp;
 import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
+import com.example.test.ui.shop.me.address.AddressActivity;
 
 import java.util.ArrayList;
 
@@ -30,7 +33,7 @@ public class OrderFormActivity extends AppCompatActivity {
     TextView tv_Phone;
     @BindView(R.id.tv_order_form_address)
     TextView tv_Address;
-    @BindView(R.id.mRl)
+    @BindView(R.id.mRl_order_form)
     RelativeLayout mRl;
     @BindView(R.id.tv_order_form_coupon)
     TextView tv_Coupon;
@@ -71,14 +74,23 @@ public class OrderFormActivity extends AppCompatActivity {
         two_left.setText("运费");
         three_left.setText("优惠券");
 
+        String str = null;
         for (int i = 0; i < list.size(); i++) {
-            one_right.setText("￥" + list.get(i).getRetail_price());
-            tv_Money.setText("" + list.get(i).getRetail_price());
+            str+=(""+Integer.valueOf(list.get(i).getRetail_price()*list.get(i).getNumber()));
         }
-
+        one_right.setText("￥" + str);
+        tv_Money.setText("" +str);
         mRlv.setLayoutManager(new LinearLayoutManager(this));
         AddressAdapter addressAdapter = new AddressAdapter(this, list);
         mRlv.setAdapter(addressAdapter);
+
+        mRl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderFormActivity.this, AddressActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

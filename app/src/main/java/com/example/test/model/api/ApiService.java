@@ -18,6 +18,9 @@ import com.example.test.model.bean.shop.shoppingcar.DeleteShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.UpdateShoppingCarBean;
 import com.example.test.model.bean.shop.special.SpecialBean;
+import com.example.test.model.bean.shop.special.SpecialDetailsBean;
+import com.example.test.model.bean.shop.special.SpecialDetailsButtomBean;
+import com.example.test.model.bean.shop.special.SpecialDetailsCommentBean;
 import com.example.test.model.bean.shop.type.TypeBean;
 import com.example.test.model.bean.shop.type.TypeInfBean;
 
@@ -40,20 +43,31 @@ public interface ApiService {
     @GET("api/index")
     Flowable<HomeBean> getHome();//主页
 
-    @GET("api/catalog/index/")
-    Flowable<ChannelBean> getChannel(@Query("id")String url);//分类
-
-    @GET("api/goods/list")//分类数据
-    Flowable<ChannelTypeBean> getChannelType(@Query("categoryId")String id);
-
     @GET("api/topic/list")//专题数据
     Flowable<SpecialBean> getSpecial(@Query("page")int page);
+
+    //https://cdplay.cn/api/topic/detail?id=314
+    //专题详情数据
+    @GET("api/topic/detail")
+    Flowable<SpecialDetailsBean> getSpecialDetails(@Query("id") int id);
+
+    //https://cdplay.cn/api/topic/related?id=314
+    //专题底部列表
+    @GET("api/topic/related")
+    Flowable<SpecialDetailsButtomBean> getSpecialDetailsButtom(@Query("id") int id);
+
+    //专题详情页评论评论数据    valueId=314&typeId=1&size=5
+    @GET("comment/list")
+    Flowable<SpecialDetailsCommentBean> getSpecialDetailsComment(@QueryMap HashMap<String,String> map);
 
     @GET("api/brand/list")//品牌制造商
     Flowable<BrandNameBean> getBrandName(@Query("page")int page,@Query("size")int size);
 
     @GET("api/brand/detail")//品牌制造商列表详情
     Flowable<BrandNameDetailBean> getBrandNameDetail(@Query("id")String id);
+
+    @GET("api/goods/list")//分类数据
+    Flowable<ChannelTypeBean> getChannelType(@Query("categoryId")String id);
 
     @GET("api/goods/list")//品牌制造商列表详情条目
     Flowable<BrandNameDetailListBean> getBrandNameDetailList(@Query("brandId")String brandId);
@@ -70,6 +84,10 @@ public interface ApiService {
     //商品 详情购买页 底部数据列表 api/goods/related?id=1155000
     @GET("api/goods/related")
     Flowable<CategoryBottomInfoBean> getCategoryBottomInfo(@Query("id")String id);
+
+    //分类
+    @GET("api/catalog/index/")
+    Flowable<ChannelBean> getChannel(@Query("id")String url);
 
     //分类右边导航
     @GET("api/catalog/index")
@@ -108,6 +126,8 @@ public interface ApiService {
     @GET("api/cart/index")
     Flowable<ShoppingCarBean> getShoppingCar();
 
+    //获取地址
     @GET("api/region/list")
-    Flowable<AddressCityBean> getAddressCity(@Path("parentId")int parentId);
+    Flowable<AddressCityBean> getAddressCity(@Query("parentId") int parentId);
+
 }

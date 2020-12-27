@@ -2,6 +2,7 @@ package com.example.test.ui.shop.home.category;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +34,6 @@ import com.example.test.model.bean.shop.home.category.CategoryBean;
 import com.example.test.model.bean.shop.home.category.CategoryBottomInfoBean;
 import com.example.test.model.bean.shop.me.collect.Favorites;
 import com.example.test.presenter.shop.home.category.CategoryPresenter;
-import com.example.test.ui.shop.ShopActivity;
 import com.example.test.ui.shop.home.category.bigpic.BigImageActivity;
 import com.example.test.ui.shop.login.LoginActivity;
 import com.example.test.utils.ImageLoaderUtils;
@@ -101,6 +101,8 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
     View mV_Comment;
     @BindView(R.id.iv_category_count)
     ImageView iv_Count;
+    @BindView(R.id.iv_img_collect)
+    ImageView iv_Collect;
 
     private boolean isSelect = false;
 
@@ -161,14 +163,14 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         intent.setAction("shu");
     }
 
-    @OnClick({R.id.fl_collect, R.id.fl_car, R.id.tv_category_buy, R.id.tv_category_addCar,R.id.iv_category_count})
+    @OnClick({R.id.fl_collect, R.id.fl_car, R.id.tv_category_buy, R.id.tv_category_addCar, R.id.iv_category_count})
     public void onClick(View view) {
         if (!TextUtils.isEmpty(SpUtils.getInstance().getString("token"))) {
             switch (view.getId()) {
-                case R.id.fl_collect:
+                case R.id.fl_collect://点击收藏
                     initCollect();
                     break;
-                case R.id.fl_car:
+                case R.id.fl_car://点击购物车跳转
                     setResult(RECOMMEND_CAR);
                     finish();
 //                    Intent intent = new Intent(CategoryActivity.this, ShopActivity.class);
@@ -178,7 +180,7 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                 case R.id.tv_category_buy:
 
                     break;
-                case R.id.tv_category_addCar:
+                case R.id.tv_category_addCar://点击添加购物车
                     //TODO 点击加入购物车弹出购物车弹框
                     if (isSelect) { //购物车进行显示隐藏
                         initPopu();//添加时
@@ -186,13 +188,13 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                         initPopu_ok();//添加成功关闭弹窗
                     }
                     break;
-                case R.id.iv_category_count:
+                case R.id.iv_category_count://规格
                     //TODO 点击加入购物车弹出购物车弹框
-                    if (isSelect) { //购物车进行显示隐藏
-                        initPopu();//添加时
-                    }else {
-                        initPopu_ok();//添加成功关闭弹窗
-                    }
+//                    if (isSelect) { //购物车进行显示隐藏
+//                        initPopu();//添加时
+//                    } else {
+//                        initPopu_ok();//添加成功关闭弹窗
+//                    }
                     break;
             }
         } else {
@@ -202,6 +204,10 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
     }
 
     private void initCollect() {
+
+        iv_Collect.setImageResource(R.mipmap.f2);
+
+        //添加数据库
         Realms.getRealm(CategoryActivity.this).executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -211,7 +217,7 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
                 favorites.setPrice(info.getRetail_price());
                 favorites.setTitle(info.getGoods_brief());
 
-                Log.e("TAG", "execute: "+info.getName()+info.getList_pic_url() );
+                Log.e("TAG", "execute: " + info.getName() + info.getList_pic_url());
             }
         });
     }
@@ -236,9 +242,14 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         View join_view = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.layout_shoppingcar_popu_ok, null);
         PopupWindow popupWindow1 = new PopupWindow(join_view, 200, 200);
 
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.alpha = 0.5f;
-        getWindow().setAttributes(attributes);
+        popupWindow1.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams attributes = getWindow().getAttributes();
+                attributes.alpha = 0.5f;
+                getWindow().setAttributes(attributes);
+            }
+        });
 
         popupWindow1.showAtLocation(tv_addCar, Gravity.CENTER, 0, 0);
 
@@ -285,6 +296,20 @@ public class CategoryActivity extends BaseActivity<ICategory.Persenter> implemen
         btn_add.setOnClickListener(clickListener);
         btn_minus.setOnClickListener(clickListener);
 
+        //关闭阴影
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.alpha = 0.5f;
+        getWindow().setAttributes(attributes);
+
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams attributes = getWindow().getAttributes();
+                attributes.alpha =1f;
+                getWindow().setAttributes(attributes);
+            }
+        });
 
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override

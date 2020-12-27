@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.R;
 import com.example.test.adapter.shop.home.brand.BrandNameDetailAdapter;
+import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
+import com.example.test.base.BaseAdapter;
 import com.example.test.model.bean.shop.home.brand.BrandNameDetailBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameDetailListBean;
 import com.example.test.presenter.shop.home.brand.BrandNameDetailPresenter;
+import com.example.test.ui.shop.home.category.CategoryActivity;
+import com.example.test.ui.shop.home.newgoods.NewGoodsActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.TxtUtils;
 import com.example.test.view.shop.home.brand.IBrand;
@@ -50,6 +54,15 @@ public class BrandNameDetailActivity extends BaseActivity<IBrand.Presenter> impl
         mRlv.setLayoutManager(new GridLayoutManager(this,2));
         brandNameDetailAdapter = new BrandNameDetailAdapter(this, list);
         mRlv.setAdapter(brandNameDetailAdapter);
+
+        brandNameDetailAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(BrandNameDetailActivity.this, CategoryActivity.class);
+                MyApp.getMap().put("categoryId",String.valueOf(list.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

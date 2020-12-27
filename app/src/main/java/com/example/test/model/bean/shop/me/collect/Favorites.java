@@ -2,6 +2,7 @@ package com.example.test.model.bean.shop.me.collect;
 
 import io.realm.RealmObject;
 
+//TODO 收藏的bean类
 public class Favorites extends RealmObject {
     private String pic;
     private String name;

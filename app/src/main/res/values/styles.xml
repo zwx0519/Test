@@ -9,7 +9,13 @@
 
     <style name="Home_Text">
         <item name="android:textSize">@dimen/sp_16</item>
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">#292828</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Home_Title">
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">#292828</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -64,5 +70,10 @@
         <item name="android:layout_height">@dimen/dp_60</item>
         <item name="title_textsize">@dimen/dp_22</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--设置tabLayout字体大小-->
+    <style name="MyCustomTabTextAppearance">
+        <item name="android:textSize">17sp</item>
     </style>
 </resources>

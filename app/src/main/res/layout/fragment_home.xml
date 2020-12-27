@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <!--    <SearchView-->
     <!--        android:id="@+id/search_view"-->
@@ -61,8 +62,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_5"
-                android:background="#E3E3E3" />
+                android:layout_height="@dimen/dp_8"
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,10 +72,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_brand_name"
-                    style="@style/Home_Text"
+                    style="@style/Home_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/dp_10"
+                    android:paddingVertical="@dimen/dp_20"
                     android:text="品牌制作商直供" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -91,10 +92,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_newGoods_name"
-                    style="@style/Home_Text"
+                    style="@style/Home_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/dp_10"
+                    android:paddingVertical="@dimen/dp_20"
                     android:text="周一周四·新品首发" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -106,7 +107,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_5"
-                android:background="#E3E3E3" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,10 +117,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_hotGoods_name"
-                    style="@style/Home_Text"
+                    style="@style/Home_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/dp_10"
+                    android:paddingVertical="@dimen/dp_20"
                     android:text="人气推荐" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -135,10 +136,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_topic_name"
-                    style="@style/Home_Text"
+                    style="@style/Home_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/dp_10"
+                    android:paddingVertical="@dimen/dp_20"
                     android:text="专题精选" />
 
                 <androidx.recyclerview.widget.RecyclerView

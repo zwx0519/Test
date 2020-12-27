@@ -31,8 +31,8 @@ public class FavoritesAdapter extends BaseAdapter<Favorites> {
         ImageView ivfavoritespic = (ImageView) vh.getViewById(R.id.iv_favorites_pic);
 
         tvfavoritesname.setText(data.getName());
-        tvfavoritesprice.setText(data.getPrice());
-        tvfavoritestitle.setText("￥"+data.getTitle());
+        tvfavoritesprice.setText("￥"+data.getPrice());
+        tvfavoritestitle.setText(data.getTitle());
         ImageLoaderUtils.loadImage(data.getPic(),ivfavoritespic);
     }
 

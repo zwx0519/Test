@@ -1,6 +1,7 @@
 package com.example.test.ui.shop.home.newgoods;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -18,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.test.R;
 import com.example.test.adapter.shop.home.newgoods.NewGoodsListAdapter;
 import com.example.test.adapter.shop.home.newgoods.NewGoodsPopuAdapter;
+import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
 import com.example.test.base.BaseAdapter;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.presenter.shop.home.newgoods.NewGoodsPresenter;
+import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.TxtUtils;
 import com.example.test.view.shop.home.newgoods.INewGoods;
@@ -241,6 +244,15 @@ public class NewGoodsActivity extends BaseActivity<INewGoods.Persenter> implemen
         mRlv.setLayoutManager(new GridLayoutManager(this, 2));
         newGoodsListAdapter = new NewGoodsListAdapter(this, data);
         mRlv.setAdapter(newGoodsListAdapter);
+
+        newGoodsListAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(NewGoodsActivity.this, CategoryActivity.class);
+                MyApp.getMap().put("categoryId",String.valueOf(data.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
 }

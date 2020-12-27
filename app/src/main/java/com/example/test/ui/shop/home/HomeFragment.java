@@ -33,6 +33,7 @@ import com.example.test.ui.shop.home.brand.BrandNameActivity;
 import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.ui.shop.home.channel.ChannelActivity;
 import com.example.test.ui.shop.home.newgoods.NewGoodsActivity;
+import com.example.test.ui.shop.special.SpecialDetailsActivity;
 import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.ItemDecoration;
 import com.example.test.utils.TxtUtils;
@@ -133,6 +134,7 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
         hotGoodsList = new ArrayList<>();
         hotGoodsAdapter = new HotGoodsAdapter(mContext, hotGoodsList);
         mRlv_HotGoods.setAdapter(hotGoodsAdapter);
+
     }
 
     //TODO 专题精选布局
@@ -156,6 +158,7 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
                 Intent intent1 = new Intent(getActivity(), NewGoodsActivity.class);
                 startActivity(intent1);
                 break;
+
         }
     }
 
@@ -228,12 +231,31 @@ public class HomeFragment extends BaseFragment<IHome.Presenter> implements IHome
     private void initTopic(List<HomeBean.DataBean.TopicListBean> topicList) {
         this.topicList.addAll(topicList);
         topicAdaptefer.notifyDataSetChanged();
+
+        topicAdaptefer.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(getActivity(), SpecialDetailsActivity.class);
+//                MyApp.getMap().put("categoryId",String.valueOf(topicList.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
     //TODO 初始化人气推荐数据
     private void initHotGoods(List<HomeBean.DataBean.HotGoodsListBean> hotGoodsList) {
         this.hotGoodsList.addAll(hotGoodsList);
         hotGoodsAdapter.notifyDataSetChanged();
+
+        //共用布局
+        hotGoodsAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(getActivity(), CategoryActivity.class);
+                MyApp.getMap().put("categoryId",String.valueOf(hotGoodsList.get(pos).getId()));
+                startActivity(intent);
+            }
+        });
     }
 
     //TODO 初始化新品首发数据

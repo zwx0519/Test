@@ -4,22 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.shop.home.channel.ChannelActivity"
-    android:orientation="vertical">
-    <include layout="@layout/layout_toolbar" />
+    android:orientation="vertical"
+    tools:context=".ui.shop.home.channel.ChannelActivity">
+
+    <include
+        layout="@layout/layout_toolbar"
+        android:background="@color/white" />
+
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mTab_channel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/Jiured"
         app:tabMode="scrollable"
-        android:id="@+id/mTab_channel"
-        />
+        app:tabSelectedTextColor="@color/Jiured"
+        android:background="@color/white"/>
+
     <com.example.test.utils.CustomViewPager
+        android:id="@+id/mVp_channel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/mVp_channel"
-        />
+        android:layout_weight="1" />
 
 
 </LinearLayout>

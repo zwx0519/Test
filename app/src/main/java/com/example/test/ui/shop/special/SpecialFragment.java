@@ -1,5 +1,6 @@
 package com.example.test.ui.shop.special;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.R;
 import com.example.test.adapter.shop.special.SpecialAdapter;
+import com.example.test.app.MyApp;
+import com.example.test.base.BaseAdapter;
 import com.example.test.base.BaseFragment;
 import com.example.test.model.bean.shop.special.SpecialBean;
 import com.example.test.presenter.shop.special.SpecialPresenter;
@@ -61,6 +64,15 @@ public class SpecialFragment extends BaseFragment<ISpecial.Presenter> implements
         list = new ArrayList<>();
         specialAdapter = new SpecialAdapter(mContext, list);
         mRlv.setAdapter(specialAdapter);
+
+        specialAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                Intent intent = new Intent(getActivity(), SpecialDetailsActivity.class);
+                MyApp.getMap().put("specialId",list.get(pos).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
