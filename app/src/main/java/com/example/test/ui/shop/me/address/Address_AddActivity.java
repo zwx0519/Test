@@ -122,8 +122,6 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
         persenter.getAddressCity(id);
         list = new ArrayList<>();
 
-
-
         initTab(view);
 
         //省市

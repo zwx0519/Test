@@ -19,6 +19,7 @@ import com.example.test.adapter.shop.special.SpecialDetailsButtomAdapter;
 import com.example.test.adapter.shop.special.SpecialDetailsCommentAdapter;
 import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
+import com.example.test.base.BaseAdapter;
 import com.example.test.model.bean.shop.special.SpecialDetailsBean;
 import com.example.test.model.bean.shop.special.SpecialDetailsButtomBean;
 import com.example.test.model.bean.shop.special.SpecialDetailsCommentBean;
@@ -105,6 +106,14 @@ public class SpecialDetailsActivity extends BaseActivity<ISpecialDetails.Present
             SpecialDetailsCommentAdapter specialDetailsCommentAdapter = new SpecialDetailsCommentAdapter(this, data);
             mRlv_Leave.setAdapter(specialDetailsCommentAdapter);
             specialDetailsCommentAdapter.notifyDataSetChanged();
+
+            btn_Move.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SpecialDetailsActivity.this, SpecialCommentActivity.class);
+                    startActivity(intent);
+                }
+            });
         }else {
             btn_Move.setVisibility(View.GONE);
         }
@@ -158,6 +167,22 @@ public class SpecialDetailsActivity extends BaseActivity<ISpecialDetails.Present
         SpecialDetailsButtomAdapter specialDetailsButtomAdapter = new SpecialDetailsButtomAdapter(this, data);
         mRlv_List.setAdapter(specialDetailsButtomAdapter);
         specialDetailsButtomAdapter.notifyDataSetChanged();
+
+        specialDetailsButtomAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+                int id = data.get(pos).getId();
+                Intent intent = new Intent(SpecialDetailsActivity.this,SpecialDetailsActivity.class);
+                persenter.getSpecialDetails(id);
+                persenter.getSpecialDetailsButtom(id);
+                HashMap<String, String> map = new HashMap<>();
+                map.put("valueId",String.valueOf(id));
+                map.put("typeId",String.valueOf(1));
+                map.put("size",String.valueOf(5));
+                persenter.getSpecialDetailsComment(map);
+                startActivity(intent);
+            }
+        });
     }
 
 }

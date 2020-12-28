@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.test.ui.shop.JumpActivity;
 import com.example.test.ui.shop.ShopActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_shop:
                 Intent intent = new Intent(this, ShopActivity.class);
+                //Intent intent = new Intent(this, JumpActivity.class);
                 startActivity(intent);
                 break;
         }

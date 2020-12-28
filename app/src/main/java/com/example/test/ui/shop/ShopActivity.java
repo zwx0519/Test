@@ -1,9 +1,10 @@
 package com.example.test.ui.shop;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,22 +14,29 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.test.R;
+import com.example.test.adapter.shop.ShopAdapter;
 import com.example.test.ui.shop.home.HomeFragment;
-import com.example.test.ui.shop.home.category.CategoryActivity;
 import com.example.test.ui.shop.me.MeFragment;
 import com.example.test.ui.shop.shoppingcart.Shopping_CartFragment;
 import com.example.test.ui.shop.special.SpecialFragment;
 import com.example.test.ui.shop.type.TypeFragment;
-import com.example.test.utils.CustomViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -45,19 +53,23 @@ public class ShopActivity extends AppCompatActivity {
     private Shopping_CartFragment shopping_cartFragment;
     private MeFragment meFragment;
     private Unbinder bind;
-    private int pos;
+    //private int pos;
     private String[] str = {"首页", "专题", "分类", "购物车", "我的"};
     private ArrayList<Fragment> list;
 
+    private Disposable disposable;
+    private PopupWindow window;
+    private TextView tv_time;
+    private ViewPager mVp;
+    private boolean aBoolean=true;
+
+    //onCreat开始获取视图
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         bind = ButterKnife.bind(this);
-        initView();
-        //initVp();
-        initFragment();//碎片
-        initTab();//Tab添加
+
     }
 
     private void initView() {
@@ -83,43 +95,8 @@ public class ShopActivity extends AppCompatActivity {
 
         //禁止滑动
         //mVp.setScanScroll(false);
-    }
-
-    private void initVp() {
-        //准备fragment
-
-        list = new ArrayList<>();
-        list.add(homeFragment);
-        list.add(specialFragment);
-        list.add(typeFragment);
-        list.add(shopping_cartFragment);
-        list.add(meFragment);
 
 
-        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager());
-        //mVp.setAdapter(vpAdapter);
-       // mTab.setupWithViewPager(mVp);
-
-        mTab.getTabAt(0).setIcon(R.drawable.home_selector);
-        mTab.getTabAt(1).setIcon(R.drawable.special_selector);
-        mTab.getTabAt(2).setIcon(R.drawable.type_selector);
-        mTab.getTabAt(3).setIcon(R.drawable.shoppingcart_selector);
-        mTab.getTabAt(4).setIcon(R.drawable.me_selector);
-
-
-//        Intent intent = getIntent();
-//        pos = intent.getIntExtra("pos", 0);
-//        mVp.setCurrentItem(pos);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //回调打开购物车
-        if (resultCode == CategoryActivity.RECOMMEND_CAR) {
-            mTab.getTabAt(3).select();
-            //mVp.setCurrentItem(3);
-        }
     }
 
     private void initFragment() {
@@ -200,7 +177,119 @@ public class ShopActivity extends AppCompatActivity {
 
     }
 
+    //onWindowFocusChanged 已经获取到视图 展示视图内容
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (aBoolean){
+            initPop();//先弹出来popu
+            initView();
+            initFragment();//碎片
+            initTab();//Tab添加
+            aBoolean=false;
+        }
+        //initVp();
+    }
 
+    private void initPop() {
+        List<Integer> integerList = new ArrayList<>();
+        integerList.add(R.mipmap.h);
+        integerList.add(R.mipmap.j);
+        integerList.add(R.mipmap.p);
+
+        View view = View.inflate(this,R.layout.layout_shop_popu,null);
+        window = new PopupWindow(view, -1,-1);
+        tv_time = view.findViewById(R.id.tv_dao);
+        mVp = view.findViewById(R.id.mVp_shop);
+        ShopAdapter vpAdapter = new ShopAdapter(this,integerList, window);
+        mVp.setAdapter(vpAdapter);
+        //展示完Popu
+        popupVpCli();
+        //进行显示
+        window.showAsDropDown(this.findViewById(R.id.mRl_shop));
+    }
+
+    //TODO 页码的点击监听
+    private void popupVpCli() {
+        mVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 2){//在最后一页执行倒计时
+                    tv_time.setVisibility(View.VISIBLE);
+                    //TODO       Interval操作符(有范围)：创建一个按照固定时间发射整数序列的Observable
+                    disposable = Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS) //起始值，发送总数量，初始延迟，固定延迟
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(Long aLong) throws Exception {
+                                    long time = 3 - aLong;
+                                    tv_time.setText(time + "s");
+                                    if (time == 0) {
+                                        window.dismiss();
+                                    }
+                                }
+                            });
+                }else{
+                    tv_time.setVisibility(View.GONE);//隐藏视图
+                    cancelCallback();//取消订阅的方法
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+
+    //TODO 取消订阅的方法
+    private void cancelCallback() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bind.unbind();
+    }
+
+    private void initVp() {
+        //准备fragment
+
+        list = new ArrayList<>();
+        list.add(homeFragment);
+        list.add(specialFragment);
+        list.add(typeFragment);
+        list.add(shopping_cartFragment);
+        list.add(meFragment);
+
+
+        //VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager());
+        //mVp.setAdapter(vpAdapter);
+        // mTab.setupWithViewPager(mVp);
+
+        mTab.getTabAt(0).setIcon(R.drawable.home_selector);
+        mTab.getTabAt(1).setIcon(R.drawable.special_selector);
+        mTab.getTabAt(2).setIcon(R.drawable.type_selector);
+        mTab.getTabAt(3).setIcon(R.drawable.shoppingcart_selector);
+        mTab.getTabAt(4).setIcon(R.drawable.me_selector);
+
+
+//        Intent intent = getIntent();
+//        pos = intent.getIntExtra("pos", 0);
+//        mVp.setCurrentItem(pos);
+    }
+
+    //TODO Vp内部适配器
     class VpAdapter extends FragmentStatePagerAdapter {
         public VpAdapter(@NonNull FragmentManager fm) {
             super(fm);
@@ -222,11 +311,5 @@ public class ShopActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return str[position];
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        bind.unbind();
     }
 }

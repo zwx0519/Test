@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.shop.special.SpecialDetailsActivity"/>
+        <activity android:name=".ui.shop.me.headportrait.Head_PortraitActivity"></activity>
+        <activity android:name=".ui.shop.special.SpecialCommentActivity" />
+        <activity android:name=".ui.shop.JumpActivity" />
+        <activity android:name=".ui.shop.special.SpecialDetailsActivity" />
         <activity android:name=".ui.shop.me.address.Address_AddActivity" />
         <activity android:name=".ui.shop.me.address.AddressActivity" />
         <activity android:name=".ui.shop.shoppingcart.OrderFormActivity" />

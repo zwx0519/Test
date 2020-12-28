@@ -1,17 +1,30 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
+apply plugin: 'org.greenrobot.greendao'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.test"
-        minSdkVersion 22
+        minSdkVersion 20
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    greendao {
+        //指定数据库schema版本号，迁移等操作会用到
+        schemaVersion 1
+        //DaoSession、DaoMaster以及所有实体类的dao生成的目录,默认为你的entity所在的包名
+        daoPackage 'com.example.test.db'
+        //这就是我们上面说到的自定义生成数据库文件的目录了，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了
+        //工程路径
+        targetGenDir 'src/main/java'
     }
 
     buildTypes {
@@ -31,7 +44,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -62,11 +75,16 @@ dependencies {
     //垂直的tablayout
     implementation 'q.rorbin:VerticalTabLayout:1.2.5'
 
-    //图片缩放
-    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-
     //侧滑删除
     implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
 
+    implementation 'org.greenrobot:greendao:3.3.0'//数据库
+    //图片缩放
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    //本地相机相册选择图片
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.3'
+
+    //dex
+    implementation 'com.android.support:multidex:1.0.3'
 }
