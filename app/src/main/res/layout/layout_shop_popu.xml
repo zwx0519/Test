@@ -17,5 +17,34 @@
         android:background="@drawable/shape_image"
         android:paddingHorizontal="20sp"
         android:paddingVertical="10dp"
-        android:visibility="gone" />/
+        android:visibility="gone" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200"
+        android:id="@+id/ll"
+        android:layout_gravity="bottom">
+        <ImageView
+            android:src="@mipmap/icon_select"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_170"
+            />
+        <ImageView
+            android:src="@mipmap/icon_noselect"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_2"
+            android:layout_gravity="center_vertical"
+            />
+        <ImageView
+            android:src="@mipmap/icon_noselect"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_3"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
 </FrameLayout>

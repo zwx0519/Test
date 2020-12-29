@@ -1,6 +1,7 @@
 package com.example.test.ui.shop.login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.test.R;
 import com.example.test.base.BaseActivity;
@@ -76,6 +78,7 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
         persenter = new LoginPresenter(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void postLoginReturn(LoginBean result) {
         token = result.getData().getToken();
@@ -87,6 +90,7 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
             Intent intent = getIntent();
             intent.putExtra("name",name);
             setResult(100,intent);
+            SpUtils.getInstance().setValue("username",name);
 
             finishAndRemoveTask();//关闭当前页面返回之前页面+
         }

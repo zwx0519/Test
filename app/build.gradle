@@ -87,4 +87,7 @@ dependencies {
 
     //dex
     implementation 'com.android.support:multidex:1.0.3'
+
+    //oss 阿里云
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.5.0'
 }

@@ -9,9 +9,9 @@
         android:id="@+id/mRl_haed_portrait"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_80"
+        android:layout_marginTop="@dimen/dp_50"
         android:paddingVertical="@dimen/dp_10"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/dp_50">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             style="@style/Home_Text"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/dp_6"
             android:layout_toLeftOf="@id/iv_head_portrait_select_img"
-            android:background="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_launcher"
             android:scaleType="fitXY" />
 
         <ImageView
@@ -49,18 +49,19 @@
         <include
             android:id="@+id/include_head_portrait_one"
             layout="@layout/layout_head_portrait_include" />
+
         <include
             android:id="@+id/include_head_portrait_two"
             layout="@layout/layout_head_portrait_include" />
+
         <include
             android:id="@+id/include_head_portrait_three"
             layout="@layout/layout_head_portrait_include" />
+
         <include
             android:id="@+id/include_head_portrait_four"
             layout="@layout/layout_head_portrait_include" />
-        <include
-            android:id="@+id/include_head_portrait_five"
-            layout="@layout/layout_head_portrait_include" />
+
     </LinearLayout>
 
 

@@ -1,13 +1,17 @@
 package com.example.test.ui.shop;
 
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -62,6 +66,9 @@ public class ShopActivity extends AppCompatActivity {
     private TextView tv_time;
     private ViewPager mVp;
     private boolean aBoolean=true;
+    private ImageView img1;
+    private ImageView img2;
+    private ImageView img3;
 
     //onCreat开始获取视图
     @Override
@@ -87,6 +94,7 @@ public class ShopActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //给图片设置监听
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 finishAndRemoveTask();
@@ -200,6 +208,10 @@ public class ShopActivity extends AppCompatActivity {
         View view = View.inflate(this,R.layout.layout_shop_popu,null);
         window = new PopupWindow(view, -1,-1);
         tv_time = view.findViewById(R.id.tv_dao);
+        img1 = view.findViewById(R.id.img_1);
+        img2 = view.findViewById(R.id.img_2);
+        img3 = view.findViewById(R.id.img_3);
+
         mVp = view.findViewById(R.id.mVp_shop);
         ShopAdapter vpAdapter = new ShopAdapter(this,integerList, window);
         mVp.setAdapter(vpAdapter);
@@ -219,6 +231,16 @@ public class ShopActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 0) {
+                    img1.setImageResource(R.mipmap.icon_select);
+                    img2.setImageResource(R.mipmap.icon_noselect);
+                    img3.setImageResource(R.mipmap.icon_noselect);
+                }
+                if (position == 1) {
+                    img1.setImageResource(R.mipmap.icon_noselect);
+                    img2.setImageResource(R.mipmap.icon_select);
+                    img3.setImageResource(R.mipmap.icon_noselect);
+                }
                 if(position == 2){//在最后一页执行倒计时
                     tv_time.setVisibility(View.VISIBLE);
                     //TODO       Interval操作符(有范围)：创建一个按照固定时间发射整数序列的Observable
@@ -235,6 +257,10 @@ public class ShopActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    img1.setImageResource(R.mipmap.icon_noselect);
+                    img2.setImageResource(R.mipmap.icon_noselect);
+                    img3.setImageResource(R.mipmap.icon_select);
+
                 }else{
                     tv_time.setVisibility(View.GONE);//隐藏视图
                     cancelCallback();//取消订阅的方法

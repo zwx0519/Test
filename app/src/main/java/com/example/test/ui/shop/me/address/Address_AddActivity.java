@@ -2,6 +2,7 @@ package com.example.test.ui.shop.me.address;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,6 +99,7 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
         String Detail = et_Detail.getText().toString();//详细地址
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.mRb_address_add_moren, R.id.btn_address_add_cancel, R.id.btn_address_add_ok, R.id.et_address_add_city})
     public void onViewClicked(View view) {
         switch (view.getId()) {
