@@ -10,8 +10,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -35,22 +36,28 @@ import com.example.test.R;
 import com.example.test.app.Constants;
 import com.example.test.base.BaseActivity;
 import com.example.test.base.IBasePersenter;
+import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
+import com.example.test.presenter.shop.me.headportrait.UpdateUserInfoPresenter;
 import com.example.test.utils.BitmapUtils;
 import com.example.test.utils.GlideEngine;
 import com.example.test.utils.SpUtils;
+import com.example.test.utils.SystemUtils;
+import com.example.test.view.shop.me.headportrait.IUpdateUserInfo;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class Head_PortraitActivity extends BaseActivity {
+public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presenter> implements IUpdateUserInfo.View {
 
     @BindView(R.id.include_head_portrait_one)
     ConstraintLayout inclue_one;
@@ -64,8 +71,14 @@ public class Head_PortraitActivity extends BaseActivity {
     ImageView iv_Pic;
     @BindView(R.id.iv_head_portrait_select_img)
     ImageView iv_Img;
+    @BindView(R.id.et_head_portrait_input)
+    EditText et_Input;
+    @BindView(R.id.btn_head_portrait_save)
+    Button btn_Save;
+    @BindView(R.id.layout_head_portrait_input)
+    ConstraintLayout layoutInput;
 
-    String bucketName = "002a-zwx";
+    String bucketName = "2002a-zwx";
     String ossPoint = "http://oss-cn-beijing.aliyuncs.com";
 
     String key = "LTAI4G1mVFsHAVqFkDdL6DPT";  //appkey
@@ -85,22 +98,44 @@ public class Head_PortraitActivity extends BaseActivity {
         TextView two_left = inclue_two.findViewById(R.id.tv_head_portrait_left);
         TextView three_left = inclue_three.findViewById(R.id.tv_head_portrait_left);
         TextView four_left = inclue_four.findViewById(R.id.tv_head_portrait_left);
+        TextView one_right = inclue_one.findViewById(R.id.tv_head_portrait_right);
+        TextView two_right = inclue_two.findViewById(R.id.tv_head_portrait_right);
+        TextView three_right = inclue_three.findViewById(R.id.tv_head_portrait_right);
+        TextView four_right = inclue_four.findViewById(R.id.tv_head_portrait_right);
+        //点击名字弹出来
+        ImageView one_img = inclue_one.findViewById(R.id.iv_head_portrait_img);
 
         one_left.setText("昵称");
+        one_right.setText("知世");
         two_left.setText("微信号");
+        two_right.setText("12345652");
         three_left.setText("拍一拍");
+        three_right.setText("拍了拍我的葫芦并叫了一声爷爷");
         four_left.setText("更多");
+        four_right.setText("");
 
-        iv_Pic.setOnClickListener(new View.OnClickListener() {
+        one_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPhoto();
+                //打开输入的状态
+                showInput();
             }
         });
+        //获取图片
         String img = SpUtils.getInstance().getString("img");
-        if(!TextUtils.isEmpty(img)){
+        if (!TextUtils.isEmpty(img)) {
             Glide.with(this).load(img).apply(new RequestOptions().circleCrop()).into(iv_Pic);
         }
+    }
+
+    //TODO 获取输入框
+    private void showInput() {
+        //显示布局
+        layoutInput.setVisibility(View.VISIBLE);
+        //获取焦点
+        et_Input.setFocusable(true);
+        //打开软键盘
+        SystemUtils.openSoftKeyBoard(this);
     }
 
     //初始化OSS
@@ -116,8 +151,8 @@ public class Head_PortraitActivity extends BaseActivity {
     }
 
     @Override
-    protected IBasePersenter createPersenter() {
-        return null;
+    protected IUpdateUserInfo.Presenter createPersenter() {
+        return new UpdateUserInfoPresenter(this);
     }
 
     @Override
@@ -126,7 +161,7 @@ public class Head_PortraitActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_head_portrait_pic, R.id.iv_head_portrait_select_img})
+    @OnClick({R.id.iv_head_portrait_pic, R.id.iv_head_portrait_select_img, R.id.btn_head_portrait_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_head_portrait_pic:
@@ -134,6 +169,14 @@ public class Head_PortraitActivity extends BaseActivity {
                 break;
             case R.id.iv_head_portrait_select_img:
 
+                break;
+            case R.id.btn_head_portrait_save:
+                String nickname = et_Input.getText().toString();
+                if (!TextUtils.isEmpty(nickname)) {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("nickname", nickname);
+                    persenter.postUpdateUserInfo(map);
+                }
                 break;
         }
     }
@@ -152,7 +195,7 @@ public class Head_PortraitActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case PictureConfig.CHOOSE_REQUEST:
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() == 0) return;
@@ -160,11 +203,11 @@ public class Head_PortraitActivity extends BaseActivity {
 
                 //把选中的图片插入到列表
                 try {
-                    for(int i=0;i<selectList.size();i++){
+                    for (int i = 0; i < selectList.size(); i++) {
                         //头像的压缩和二次采样
-                        Bitmap scaleBitmp = BitmapUtils.getScaleBitmap(selectList.get(i).getPath(), Constants.HEAD_WIDTH,Constants.HEAD_HEIGHT);
+                        Bitmap scaleBitmp = BitmapUtils.getScaleBitmap(selectList.get(i).getPath(), Constants.HEAD_WIDTH, Constants.HEAD_HEIGHT);
                         //Bitmap转uri
-                        Uri uri=Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), scaleBitmp, null,null));
+                        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), scaleBitmp, null, null));
                         //uri转字符串
                         String path = getRealPathFromUri(this, uri);
                         uploadHead(path);//上传头像
@@ -185,7 +228,7 @@ public class Head_PortraitActivity extends BaseActivity {
     public static String getRealPathFromUri(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
+            String[] proj = {MediaStore.Images.Media.DATA};
             cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -199,20 +242,22 @@ public class Head_PortraitActivity extends BaseActivity {
 
     //上传到阿里云
     private void uploadHead(String path) {
-        String fileName = path.substring(path.lastIndexOf("/")+1,path.length());
+        String uid = SpUtils.getInstance().getString("uid");
+        //String fileName = path.substring(path.lastIndexOf("/") + 1, path.length());
+        String fileName = uid + "/" + System.currentTimeMillis() + Math.random() * 10000 + ".png";
         PutObjectRequest put = new PutObjectRequest(bucketName, fileName, path);
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
             @Override
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                 //上次进度
-                Log.i("oss_upload",currentSize+"/"+totalSize);
+                Log.i("oss_upload", currentSize + "/" + totalSize);
                 // 进度百分比的计算
                 // int p = (int) (currentSize/totalSize*100);
-                if(currentSize == totalSize){
+                if (currentSize == totalSize) {
                     //完成
                     String headUrl = request.getUploadFilePath();
                     //
-                    Log.i("HeadUrl",headUrl);
+                    Log.i("HeadUrl", headUrl);
                     //request.getUploadFilePath()
                 }
 
@@ -225,11 +270,14 @@ public class Head_PortraitActivity extends BaseActivity {
                 Log.d("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
                 //成功的回调中读取相关的上传文件的信息  生成一个url地址
-                String url = ossClient.presignPublicObjectURL(request.getBucketName(),request.getObjectKey());
+                String url = ossClient.presignPublicObjectURL(request.getBucketName(), request.getObjectKey());
                 //TODO 刷新显示到界面上
                 updateHead(url);
                 //调用服务器接口，把url上传到服务器的接口
-                SpUtils.getInstance().setValue("img",url);
+                SpUtils.getInstance().setValue("img", url);
+                HashMap<String, String> map = new HashMap<>();
+                map.put("avatar", url);
+                persenter.postUpdateUserInfo(map);
             }
 
             @Override
@@ -258,5 +306,14 @@ public class Head_PortraitActivity extends BaseActivity {
                 Glide.with(iv_Pic).load(url).apply(new RequestOptions().circleCrop()).into(iv_Pic);
             }
         });
+    }
+
+    @Override
+    public void postUpdateUserInfoReturn(HeadPortraitBean result) {
+        if (result.getErrno() == 0) {
+            //关闭
+            SystemUtils.closeSoftKeyBoard(this);
+            layoutInput.setVisibility(View.GONE);
+        }
     }
 }

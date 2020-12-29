@@ -18,33 +18,45 @@
         android:paddingHorizontal="20sp"
         android:paddingVertical="10dp"
         android:visibility="gone" />
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_200"
-        android:id="@+id/ll"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
         <ImageView
-            android:src="@mipmap/icon_select"
+            android:id="@+id/img_1"
             android:layout_width="@dimen/dp_20"
             android:layout_height="wrap_content"
-            android:id="@+id/img_1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp_170"
-            />
+            android:src="@mipmap/icon_select" />
+
         <ImageView
-            android:src="@mipmap/icon_noselect"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="wrap_content"
             android:id="@+id/img_2"
-            android:layout_gravity="center_vertical"
-            />
-        <ImageView
-            android:src="@mipmap/icon_noselect"
             android:layout_width="@dimen/dp_20"
             android:layout_height="wrap_content"
-            android:id="@+id/img_3"
             android:layout_gravity="center_vertical"
-            />
+            android:src="@mipmap/icon_noselect" />
+
+        <ImageView
+            android:id="@+id/img_3"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_noselect" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_shop_popu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/dp_40"
+        android:layout_marginVertical="@dimen/dp_10"
+        android:background="@drawable/shape_order_form"
+        android:text="立即体验"
+        android:visibility="gone" />
 </FrameLayout>

@@ -13,6 +13,7 @@ import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.login.LoginBean;
 import com.example.test.model.bean.shop.login.RegisterBean;
 import com.example.test.model.bean.shop.me.address.AddressCityBean;
+import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
 import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.DeleteShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.ShoppingCarBean;
@@ -130,4 +131,8 @@ public interface ApiService {
     @GET("api/region/list")
     Flowable<AddressCityBean> getAddressCity(@Query("parentId") int parentId);
 
+    //用户信息更新
+    @POST("api/user/updateUserInfo")
+    @FormUrlEncoded
+    Flowable<HeadPortraitBean> postUpdateUserInfo(@FieldMap HashMap<String,String> map);
 }

@@ -4,6 +4,7 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -69,6 +70,7 @@ public class ShopActivity extends AppCompatActivity {
     private ImageView img1;
     private ImageView img2;
     private ImageView img3;
+    private Button btn_popu;
 
     //onCreat开始获取视图
     @Override
@@ -76,7 +78,6 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         bind = ButterKnife.bind(this);
-
     }
 
     private void initView() {
@@ -211,10 +212,17 @@ public class ShopActivity extends AppCompatActivity {
         img1 = view.findViewById(R.id.img_1);
         img2 = view.findViewById(R.id.img_2);
         img3 = view.findViewById(R.id.img_3);
-
+        btn_popu = view.findViewById(R.id.btn_shop_popu);
         mVp = view.findViewById(R.id.mVp_shop);
         ShopAdapter vpAdapter = new ShopAdapter(this,integerList, window);
         mVp.setAdapter(vpAdapter);
+        btn_popu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+                cancelCallback();//取消订阅的方法
+            }
+        });
         //展示完Popu
         popupVpCli();
         //进行显示
@@ -242,6 +250,7 @@ public class ShopActivity extends AppCompatActivity {
                     img3.setImageResource(R.mipmap.icon_noselect);
                 }
                 if(position == 2){//在最后一页执行倒计时
+                    btn_popu.setVisibility(View.VISIBLE);
                     tv_time.setVisibility(View.VISIBLE);
                     //TODO       Interval操作符(有范围)：创建一个按照固定时间发射整数序列的Observable
                     disposable = Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS) //起始值，发送总数量，初始延迟，固定延迟
@@ -263,6 +272,7 @@ public class ShopActivity extends AppCompatActivity {
 
                 }else{
                     tv_time.setVisibility(View.GONE);//隐藏视图
+                    btn_popu.setVisibility(View.GONE);//隐藏视图
                     cancelCallback();//取消订阅的方法
                 }
             }
