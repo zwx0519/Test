@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.test.R;
+import com.example.test.app.MyApp;
 import com.example.test.base.BaseFragment;
 import com.example.test.base.IBasePersenter;
 import com.example.test.ui.shop.login.LoginActivity;
@@ -127,6 +128,13 @@ public class MeFragment extends BaseFragment {
     private void openUserInfoDetail() {
         ToastUtils.s(getActivity(), "此用户已登录");
         Intent intent = new Intent(mContext, Head_PortraitActivity.class);
+
+        String txtName = tv_Name.getText().toString();//姓名
+        String txtMark = tv_Mark.getText().toString();//签名
+
+        MyApp.getMap().put("txtName",txtName);
+        MyApp.getMap().put("txtMark",txtMark);
+
         startActivity(intent);
         isLogin(true);
     }

@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.test.R;
 import com.example.test.app.Constants;
+import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
 import com.example.test.base.IBasePersenter;
 import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
@@ -94,39 +95,95 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
     @Override
     protected void initView() {
         initOss();
-        TextView one_left = inclue_one.findViewById(R.id.tv_head_portrait_left);
-        TextView two_left = inclue_two.findViewById(R.id.tv_head_portrait_left);
-        TextView three_left = inclue_three.findViewById(R.id.tv_head_portrait_left);
-        TextView four_left = inclue_four.findViewById(R.id.tv_head_portrait_left);
-        TextView one_right = inclue_one.findViewById(R.id.tv_head_portrait_right);
-        TextView two_right = inclue_two.findViewById(R.id.tv_head_portrait_right);
-        TextView three_right = inclue_three.findViewById(R.id.tv_head_portrait_right);
-        TextView four_right = inclue_four.findViewById(R.id.tv_head_portrait_right);
-        //点击名字弹出来
-        ImageView one_img = inclue_one.findViewById(R.id.iv_head_portrait_img);
+        initIncludeView();
 
-        one_left.setText("昵称");
-        one_right.setText("知世");
-        two_left.setText("微信号");
-        two_right.setText("12345652");
-        three_left.setText("拍一拍");
-        three_right.setText("拍了拍我的葫芦并叫了一声爷爷");
-        four_left.setText("更多");
-        four_right.setText("");
-
-        one_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //打开输入的状态
-                showInput();
-            }
-        });
         //获取图片
         String img = SpUtils.getInstance().getString("img");
         if (!TextUtils.isEmpty(img)) {
             Glide.with(this).load(img).apply(new RequestOptions().circleCrop()).into(iv_Pic);
         }
     }
+
+    //TODO 初始化引用控件的布局
+    private void initIncludeView() {
+
+        TextView one_left = inclue_one.findViewById(R.id.tv_head_portrait_left);
+        TextView two_left = inclue_two.findViewById(R.id.tv_head_portrait_left);
+        TextView three_left = inclue_three.findViewById(R.id.tv_head_portrait_left);
+        TextView four_left = inclue_four.findViewById(R.id.tv_head_portrait_left);
+        TextView nikename = inclue_one.findViewById(R.id.tv_head_portrait_right);
+        TextView two_right = inclue_two.findViewById(R.id.tv_head_portrait_right);
+        TextView mark = inclue_three.findViewById(R.id.tv_head_portrait_right);
+        TextView four_right = inclue_four.findViewById(R.id.tv_head_portrait_right);
+        //点击名字弹出来
+        ImageView one_img = inclue_one.findViewById(R.id.iv_head_portrait_img);
+        ImageView three_img = inclue_three.findViewById(R.id.iv_head_portrait_img);
+
+        String name = SpUtils.getInstance().getString("name");
+        String txtName = (String) MyApp.getMap().get("txtName");
+        String Mark = (String) MyApp.getMap().get("txtMark");
+
+        one_left.setText("昵称");
+        nikename.setText(txtName);//姓名 Username
+        two_left.setText("微信号");
+        two_right.setText(name);
+        three_left.setText("签名");
+        mark.setText(Mark);
+        four_left.setText("更多");//Nikename
+        four_right.setText("");
+
+        //修改名字
+        one_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //打开输入的状态
+                showInput();
+                btn_Save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String nickname = et_Input.getText().toString();
+                        if (!TextUtils.isEmpty(nickname)) {
+                            HashMap<String, String> map = new HashMap<>();
+                            map.put("nickname", nickname);
+                            persenter.postUpdateUserInfo(map);
+                            layoutInput.setVisibility(View.GONE);
+                            SpUtils.getInstance().remove("nickname");
+                            SpUtils.getInstance().setValue("nickname", nickname);
+                            nikename.setText(nickname);
+                            et_Input.setText("");
+                        }
+                    }
+                });
+            }
+        });
+
+        //修改签名
+        three_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInput();
+                //打开输入的状态
+                showInput();
+                btn_Save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String markName = et_Input.getText().toString();
+                        if (!TextUtils.isEmpty(markName)) {
+                            HashMap<String, String> map = new HashMap<>();
+                            map.put("mark", markName);
+                            persenter.postUpdateUserInfo(map);
+                            layoutInput.setVisibility(View.GONE);
+                            SpUtils.getInstance().remove("mark");
+                            SpUtils.getInstance().setValue("mark", markName);
+                            mark.setText(markName);
+                            et_Input.setText("");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
     //TODO 获取输入框
     private void showInput() {

@@ -52,7 +52,11 @@ public class DiscussActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        list = new ArrayList<>();
+        //网格布局
+        mRlv.setLayoutManager(new GridLayoutManager(DiscussActivity.this, 3));
+        pingAdapter = new DiscussAdapter(DiscussActivity.this, list);
+        mRlv.setAdapter(pingAdapter);
     }
 
     @Override
@@ -62,11 +66,7 @@ public class DiscussActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        list = new ArrayList<>();
-        //网格布局
-        mRlv.setLayoutManager(new GridLayoutManager(DiscussActivity.this, 3));
-        pingAdapter = new DiscussAdapter(DiscussActivity.this, list);
-        mRlv.setAdapter(pingAdapter);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -86,6 +86,7 @@ public class DiscussActivity extends BaseActivity {
         }
     }
 
+    //TODO 打开相册
     private void openPhoto() {
         int sum = 9 - list.size();//判断集合的长度是否大于9
         PictureSelector.create(this)
@@ -103,12 +104,12 @@ public class DiscussActivity extends BaseActivity {
             Toast.makeText(this, "评论不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("text", Desc);
-        bundle.putStringArrayList("list", list);
-        intent.putExtra("bundle", bundle);
-        setResult(200, intent);
+//        Intent intent = new Intent();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("text", Desc);
+//        bundle.putStringArrayList("list", list);
+//        intent.putExtra("bundle", bundle);
+//        setResult(200, intent);
         finish();
     }
 
