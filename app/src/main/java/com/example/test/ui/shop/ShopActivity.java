@@ -104,8 +104,6 @@ public class ShopActivity extends AppCompatActivity {
 
         //禁止滑动
         //mVp.setScanScroll(false);
-
-
     }
 
     private void initFragment() {
@@ -191,7 +189,7 @@ public class ShopActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (aBoolean){
-            initPop();//先弹出来popu
+            //initPop();//先弹出来popu
             initView();
             initFragment();//碎片
             initTab();//Tab添加

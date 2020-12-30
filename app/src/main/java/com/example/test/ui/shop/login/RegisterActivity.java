@@ -2,6 +2,7 @@ package com.example.test.ui.shop.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.test.R;
@@ -48,13 +50,21 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
         return R.layout.activity_register;
     }
 
+    @Override
+    protected IRegister.Presenter createPersenter() {
+        return new RegisterPresenter(this);
+    }
+
+    @Override
+    protected void initData() {
+        persenter = new RegisterPresenter(this);
+    }
+
     protected void initView() {
         //验证码
         Bitmap bitmap = CodeUtils.getInstance().createBitmap();
         iv_Code_Img.setImageBitmap(bitmap);
-
     }
-
 
     @OnClick({R.id.iv_register_code_img, R.id.btn_register})
     public void onClick(View view) {
@@ -74,7 +84,6 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
         name = et_Name.getText().toString();//用户名
         pwd = et_Pw.getText().toString();//密码
         String Repwd = et_Repwd.getText().toString();//确认密码
-
         String ver = et_Code.getText().toString();//验证码
 
         //不能为空
@@ -115,18 +124,7 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
 
     }
 
-
-    @Override
-    protected IRegister.Presenter createPersenter() {
-        return new RegisterPresenter(this);
-    }
-
-    @Override
-    protected void initData() {
-        persenter = new RegisterPresenter(this);
-    }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void postRegisterReturn(RegisterBean result) {
         String token = result.getData().getToken().toString();

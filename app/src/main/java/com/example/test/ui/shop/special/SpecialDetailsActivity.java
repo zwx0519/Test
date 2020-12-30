@@ -60,7 +60,15 @@ public class SpecialDetailsActivity extends BaseActivity<ISpecialDetails.Present
     }
 
     @Override
-    protected void initView() {
+    protected void initView()  {
+        iv_Leave_Img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SpecialDetailsActivity.this, DiscussActivity.class);
+                startActivityForResult(intent,100);
+            }
+        });
+
 
     }
 

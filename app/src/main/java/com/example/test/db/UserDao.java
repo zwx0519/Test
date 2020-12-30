@@ -27,8 +27,9 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property Mid = new Property(0, Long.class, "mid", true, "_id");
         public final static Property MName = new Property(1, String.class, "mName", false, "M_NAME");
         public final static Property MPhone = new Property(2, String.class, "mPhone", false, "M_PHONE");
-        public final static Property MAddress = new Property(3, String.class, "mAddress", false, "M_ADDRESS");
-        public final static Property ABoolean = new Property(4, boolean.class, "aBoolean", false, "A_BOOLEAN");
+        public final static Property MCity = new Property(3, String.class, "mCity", false, "M_CITY");
+        public final static Property MDetail = new Property(4, String.class, "mDetail", false, "M_DETAIL");
+        public final static Property ABoolean = new Property(5, boolean.class, "aBoolean", false, "A_BOOLEAN");
     }
 
 
@@ -47,8 +48,9 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: mid
                 "\"M_NAME\" TEXT," + // 1: mName
                 "\"M_PHONE\" TEXT," + // 2: mPhone
-                "\"M_ADDRESS\" TEXT," + // 3: mAddress
-                "\"A_BOOLEAN\" INTEGER NOT NULL );"); // 4: aBoolean
+                "\"M_CITY\" TEXT," + // 3: mCity
+                "\"M_DETAIL\" TEXT," + // 4: mDetail
+                "\"A_BOOLEAN\" INTEGER NOT NULL );"); // 5: aBoolean
     }
 
     /** Drops the underlying database table. */
@@ -76,11 +78,16 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(3, mPhone);
         }
  
-        String mAddress = entity.getMAddress();
-        if (mAddress != null) {
-            stmt.bindString(4, mAddress);
+        String mCity = entity.getMCity();
+        if (mCity != null) {
+            stmt.bindString(4, mCity);
         }
-        stmt.bindLong(5, entity.getABoolean() ? 1L: 0L);
+ 
+        String mDetail = entity.getMDetail();
+        if (mDetail != null) {
+            stmt.bindString(5, mDetail);
+        }
+        stmt.bindLong(6, entity.getABoolean() ? 1L: 0L);
     }
 
     @Override
@@ -102,11 +109,16 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(3, mPhone);
         }
  
-        String mAddress = entity.getMAddress();
-        if (mAddress != null) {
-            stmt.bindString(4, mAddress);
+        String mCity = entity.getMCity();
+        if (mCity != null) {
+            stmt.bindString(4, mCity);
         }
-        stmt.bindLong(5, entity.getABoolean() ? 1L: 0L);
+ 
+        String mDetail = entity.getMDetail();
+        if (mDetail != null) {
+            stmt.bindString(5, mDetail);
+        }
+        stmt.bindLong(6, entity.getABoolean() ? 1L: 0L);
     }
 
     @Override
@@ -120,8 +132,9 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // mid
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // mName
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // mPhone
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mAddress
-            cursor.getShort(offset + 4) != 0 // aBoolean
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mCity
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // mDetail
+            cursor.getShort(offset + 5) != 0 // aBoolean
         );
         return entity;
     }
@@ -131,8 +144,9 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setMid(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMPhone(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setMAddress(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setABoolean(cursor.getShort(offset + 4) != 0);
+        entity.setMCity(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setMDetail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setABoolean(cursor.getShort(offset + 5) != 0);
      }
     
     @Override

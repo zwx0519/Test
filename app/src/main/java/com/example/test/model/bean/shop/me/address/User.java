@@ -10,15 +10,17 @@ public class User {
     private Long mid;
     private String mName;
     private String mPhone;
-    private String mAddress;
+    private String mCity;
+    private String mDetail;
     private boolean aBoolean;
-    @Generated(hash = 1405732797)
-    public User(Long mid, String mName, String mPhone, String mAddress,
+    @Generated(hash = 1471376360)
+    public User(Long mid, String mName, String mPhone, String mCity, String mDetail,
             boolean aBoolean) {
         this.mid = mid;
         this.mName = mName;
         this.mPhone = mPhone;
-        this.mAddress = mAddress;
+        this.mCity = mCity;
+        this.mDetail = mDetail;
         this.aBoolean = aBoolean;
     }
     @Generated(hash = 586692638)
@@ -42,11 +44,17 @@ public class User {
     public void setMPhone(String mPhone) {
         this.mPhone = mPhone;
     }
-    public String getMAddress() {
-        return this.mAddress;
+    public String getMCity() {
+        return this.mCity;
     }
-    public void setMAddress(String mAddress) {
-        this.mAddress = mAddress;
+    public void setMCity(String mCity) {
+        this.mCity = mCity;
+    }
+    public String getMDetail() {
+        return this.mDetail;
+    }
+    public void setMDetail(String mDetail) {
+        this.mDetail = mDetail;
     }
     public boolean getABoolean() {
         return this.aBoolean;

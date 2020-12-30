@@ -74,9 +74,9 @@ public class OrderFormActivity extends AppCompatActivity {
         two_left.setText("运费");
         three_left.setText("优惠券");
 
-        String str = null;
+        int str = 0;
         for (int i = 0; i < list.size(); i++) {
-            str+=(""+Integer.valueOf(list.get(i).getRetail_price()*list.get(i).getNumber()));
+            str+=(list.get(i).getRetail_price()*list.get(i).getNumber());
         }
         one_right.setText("￥" + str);
         tv_Money.setText("" +str);

@@ -3,6 +3,7 @@ package com.example.test.ui.shop.me.address;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.R;
+import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
 import com.example.test.base.BaseAdapter;
+import com.example.test.db.DaoSession;
 import com.example.test.model.bean.shop.me.address.AddressCityBean;
+import com.example.test.model.bean.shop.me.address.User;
 import com.example.test.presenter.shop.me.address.AddressCityPresenter;
 import com.example.test.utils.ToastUtils;
 import com.example.test.view.shop.me.address.IAddress;
@@ -85,38 +89,71 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
     private int mSelectCountyPosition = 0;//选中 区县  位置
     private TabLayout mTab; // tabLayout
     private TextView sure;//Tab页里面的确定
+    private DaoSession daoSefssion;
 
     @Override
     protected int getLayout() {
-        return R.layout.activity_address__add;
+        return R.layout.activity_address_add;
     }
 
     @Override
     protected void initView() {
         et_City.setFocusable(false);//让EditText失去焦点，然后获取点击事件
-        String name = et_Name.getText().toString();//姓名
-        String Phone = et_Phone.getText().toString();//手机号
-        String Detail = et_Detail.getText().toString();//详细地址
+        daoSefssion = MyApp.getDaoSession();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @OnClick({R.id.mRb_address_add_moren, R.id.btn_address_add_cancel, R.id.btn_address_add_ok, R.id.et_address_add_city})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.et_address_add_city:
+            case R.id.et_address_add_city://点击地址
                 addcity();//弹出来弹窗
                 //点击弹出
                 break;
-            case R.id.mRb_address_add_moren:
+            case R.id.mRb_address_add_moren://默认
 
                 break;
-            case R.id.btn_address_add_cancel:
+            case R.id.btn_address_add_cancel://取消
                 finishAndRemoveTask();//关闭页面
                 break;
-            case R.id.btn_address_add_ok:
-
+            case R.id.btn_address_add_ok://保存
+                initsave();//进行保存
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void initsave() {
+        String name = et_Name.getText().toString();//姓名
+        String Phone = et_Phone.getText().toString();//手机号
+        String Detail = et_Detail.getText().toString();//详细地址
+        String City= et_City.getText().toString();//省市
+
+        //GreenDao插入数据
+        User user = new User();
+        user.setMName(name);
+        user.setMPhone(Phone);
+        user.setMCity(City);
+        user.setMDetail(Detail);
+        mRb_Moren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mRb_Moren.isChecked()){
+                    user.setABoolean(true);
+                }else {
+                    user.setABoolean(false);
+                }
+            }
+        });
+
+        long insert = daoSefssion.getUserDao().insert(user);
+        if(insert>0){
+            Log.e("TAG","添加成功");
+            finishAndRemoveTask();
+        }else {
+            Log.e("TAG","添加失败");
+        }
+
     }
 
     private void addcity() {
@@ -207,6 +244,7 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
                                     getWindow().setAttributes(lp);//重新设置背景
                                 }
                             });
+                            et_City.setFocusable(true);//重新获得焦点
                         }
                     } else {
                         Toast.makeText(Address_AddActivity.this, "地址还没有选完整哦", Toast.LENGTH_SHORT).show();
@@ -315,7 +353,7 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
 
         @Override
         protected int getLayout(int type) {
-            return R.layout.layout_address_add_item;
+            return R.layout.layout_address_add_popu_item;
         }
 
         @Override

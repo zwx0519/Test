@@ -69,9 +69,7 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
         Intent intent = getIntent();
         register_token = intent.getStringExtra("register_token");
         register_username = intent.getStringExtra("register_username");
-
     }
-
 
     @Override
     protected void initData() {
@@ -135,6 +133,12 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
             String token=SpUtils.getInstance().getString("token");
             if(token!=null){
                 persenter.postLogin(username, pw);
+                if (token != null) {
+                    persenter.postLogin(username, pw);
+                    SpUtils.getInstance().setValue("name",username);
+                } else {
+                    ToastUtils.s(this, getString(R.string.tips_login));
+                }
             }else {
                 ToastUtils.s(this,getString(R.string.tips_login));
             }

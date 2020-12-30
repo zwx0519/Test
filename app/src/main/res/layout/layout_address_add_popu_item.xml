@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/tv_address_item_province"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="北京"
+        android:textColor="#000"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

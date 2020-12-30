@@ -1,10 +1,12 @@
 package com.example.test.ui.shop.home.channel;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -60,6 +62,7 @@ public class ChannelActivity extends BaseActivity<IChannel.Presenter> implements
 
         //图片返回
         ivReturn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 finishAndRemoveTask();//返回上一个页面

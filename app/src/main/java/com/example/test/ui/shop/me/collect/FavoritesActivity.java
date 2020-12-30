@@ -58,9 +58,9 @@ public class FavoritesActivity extends BaseActivity {
         // 设置菜单Item点击监听
         mRlv.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mRlv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRlv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        favoritesAdapter = new FavoritesAdapter(this,list);
+        favoritesAdapter = new FavoritesAdapter(this, list);
         mRlv.setAdapter(favoritesAdapter);
 
         //查询保存到数据库的值
@@ -93,16 +93,17 @@ public class FavoritesActivity extends BaseActivity {
     private SwipeMenuItemClickListener menuItemClickListener = new SwipeMenuItemClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge) {
-            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
-            menuBridge.closeMenu();
-            //在menuBridge中我们可以得到侧滑的这一项item的position (menuBridge.getAdapterPosition())
-            int adapterPosition = menuBridge.getAdapterPosition();
-            list.remove(adapterPosition);
+
             //删除数据库
             Realms.getRealm(FavoritesActivity.this).executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
+                    // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+                    menuBridge.closeMenu();
+                    //在menuBridge中我们可以得到侧滑的这一项item的position (menuBridge.getAdapterPosition())
+                    int adapterPosition = menuBridge.getAdapterPosition();
                     all.get(adapterPosition).deleteFromRealm();
+                    list.remove(adapterPosition);
                 }
             });
             favoritesAdapter.notifyDataSetChanged();

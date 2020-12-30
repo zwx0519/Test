@@ -73,4 +73,8 @@ public class SpUtils {
     public void remove(String key){
         sp.edit().remove(key).commit();
     }
+
+    public void delete(){
+        sp.edit().clear().commit();
+    }
 }

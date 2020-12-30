@@ -160,7 +160,6 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
 
     }
 
-
     @OnClick({R.id.iv_head_portrait_pic, R.id.iv_head_portrait_select_img, R.id.btn_head_portrait_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -240,7 +239,7 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
         }
     }
 
-    //上传到阿里云
+    //TODO 上传到阿里云
     private void uploadHead(String path) {
         String uid = SpUtils.getInstance().getString("uid");
         //String fileName = path.substring(path.lastIndexOf("/") + 1, path.length());
@@ -311,7 +310,7 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
     @Override
     public void postUpdateUserInfoReturn(HeadPortraitBean result) {
         if (result.getErrno() == 0) {
-            //关闭
+            //关闭软键盘
             SystemUtils.closeSoftKeyBoard(this);
             layoutInput.setVisibility(View.GONE);
         }

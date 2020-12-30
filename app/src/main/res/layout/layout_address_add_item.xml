@@ -3,14 +3,64 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/tv_address_item_province"
+
+    <RelativeLayout
+        android:id="@+id/mRl_order_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="北京"
-        android:textColor="#000"
-        android:textSize="@dimen/sp_20"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:paddingVertical="@dimen/dp_10"
+        app:layout_constraintTop_toTopOf="parent">
 
-        />
+        <TextView
+            android:id="@+id/tv_address_add_list_name"
+            style="@style/Home_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_30"
+            android:text="小张" />
+
+        <TextView
+            android:id="@+id/tv_address_add_list_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_address_add_list_name"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_4"
+            android:background="@drawable/shape_order_form"
+            android:padding="@dimen/dp_4"
+            android:text="默认"
+            android:textColor="#872E28"
+            android:textSize="@dimen/sp_8"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/tv_address_add_list_phone"
+            style="@style/Home_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_address_add_list_name"
+            android:text="15564732161" />
+
+        <TextView
+            android:id="@+id/tv_order_form_list_address"
+            style="@style/Home_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_address_add_list_phone"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_toRightOf="@id/tv_address_add_list_more"
+            android:text="山东省"
+            android:layout_marginLeft="@dimen/dp_30"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginHorizontal="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@mipmap/ic_arrow_rt" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral() // 添加的代码
 
         maven { url 'https://jitpack.io' }
     }

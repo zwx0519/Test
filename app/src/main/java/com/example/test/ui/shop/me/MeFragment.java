@@ -18,8 +18,11 @@ import com.example.test.ui.shop.login.LoginActivity;
 import com.example.test.ui.shop.me.address.AddressActivity;
 import com.example.test.ui.shop.me.collect.FavoritesActivity;
 import com.example.test.ui.shop.me.headportrait.Head_PortraitActivity;
+import com.example.test.utils.ActivityCollectorUtil;
+import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.SpUtils;
 import com.example.test.utils.ToastUtils;
+import com.example.test.utils.TxtUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,11 +36,14 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.iv_my_return)
     ImageView iv_Return;
 
-
     public static final int LOGIN_ME = 10001; //登录成功的回传值
     public static final int LOGINOUT_ME = 10002; //退出登录的回传
     @BindView(R.id.tv_my_login)
     TextView tv_Login;
+    @BindView(R.id.tv_my_head_nickname)
+    TextView tv_Name;
+    @BindView(R.id.tv_my_head_mark)
+    TextView tv_Mark;
 
 
     @Override
@@ -92,56 +98,68 @@ public class MeFragment extends BaseFragment {
     private void initLogin() {
         String token = SpUtils.getInstance().getString("token");
         if (!TextUtils.isEmpty(token)) {
-            openUserInfoDetail();
+            openUserInfoDetail();//不为空 进行跳转到用户详情
         } else {
-            openLogin();
+            openLogin();//为空 进行登录
         }
     }
 
     //TODO 退出登录
     private void loginOut() {
+        //清空Sp
+        SpUtils.getInstance().delete();
 
+        //退出登录
+        ActivityCollectorUtil.finishAllActivity();
+
+        //关闭页面
+       // finishAndRemoveTask();
     }
 
     //TODO 打开登录页面
     private void openLogin() {
         Intent intent = new Intent(mContext, LoginActivity.class);
         startActivityForResult(intent, LOGIN_ME);
+        isLogin(false);
     }
 
     //TODO 打开用户信息
     private void openUserInfoDetail() {
         ToastUtils.s(getActivity(), "此用户已登录");
+        Intent intent = new Intent(mContext, Head_PortraitActivity.class);
+        startActivity(intent);
+        isLogin(true);
     }
 
 
-
     //TODO 登录状态的界面控制
-
     private void isLogin(boolean b) {
         if (b) {
+            tv_Login.setVisibility(View.GONE);//隐藏
+            tv_Name.setVisibility(View.VISIBLE);//显示
+            tv_Mark.setVisibility(View.VISIBLE);
             String username = SpUtils.getInstance().getString("username");
             String nickname = SpUtils.getInstance().getString("nickname");
             String avatar = SpUtils.getInstance().getString("avatar");
             String mark = SpUtils.getInstance().getString("mark");
             if (!TextUtils.isEmpty(nickname)) {
-                tv_Login.setText(username);
+                tv_Name.setText(nickname);
             } else {
-                // tv_Login.setText(username);
+                tv_Name.setText(username);
             }
-            //ImageLoaderUtils.loadImage(avatar, iv_Img);
+            ImageLoaderUtils.loadImage(avatar, iv_Img);
+            TxtUtils.setTextView(tv_Mark, mark);
             String img = SpUtils.getInstance().getString("img");
             if (!TextUtils.isEmpty(img)) {
                 //上传头像后选择头像并返回
                 Glide.with(this).load(img).apply(new RequestOptions().circleCrop()).into(iv_Img);
             }
+        } else {
+            tv_Login.setVisibility(View.VISIBLE);//点击登录显示
+            tv_Name.setVisibility(View.GONE);//隐藏
+            tv_Mark.setVisibility(View.GONE);
+            Glide.with(this).load(R.mipmap.c4).apply(new RequestOptions().circleCrop()).into(iv_Img);
         }
-    }
-
-
-    //TODO 登录成功
-    public void loginSuccess() {
-        isLogin(true);
     }
 
     @Override
@@ -153,5 +171,4 @@ public class MeFragment extends BaseFragment {
             isLogin(false);
         }
     }
-
 }
