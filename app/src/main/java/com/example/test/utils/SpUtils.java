@@ -74,6 +74,7 @@ public class SpUtils {
         sp.edit().remove(key).commit();
     }
 
+    //清空所有sp保存对象
     public void delete(){
         sp.edit().clear().commit();
     }

@@ -15,6 +15,8 @@ import com.example.test.R;
 import com.example.test.app.MyApp;
 import com.example.test.base.BaseFragment;
 import com.example.test.base.IBasePersenter;
+import com.example.test.model.bean.shop.login.LogoutBean;
+import com.example.test.presenter.shop.login.LogoutPresenter;
 import com.example.test.ui.shop.login.LoginActivity;
 import com.example.test.ui.shop.me.address.AddressActivity;
 import com.example.test.ui.shop.me.collect.FavoritesActivity;
@@ -24,12 +26,14 @@ import com.example.test.utils.ImageLoaderUtils;
 import com.example.test.utils.SpUtils;
 import com.example.test.utils.ToastUtils;
 import com.example.test.utils.TxtUtils;
+import com.example.test.view.shop.login.ILogout;
+import com.example.test.view.shop.me.headportrait.IUpdateUserInfo;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 //TODO 我的展示
-public class MeFragment extends BaseFragment {
+public class MeFragment extends BaseFragment<ILogout.Presenter> implements ILogout.View {
     @BindView(R.id.ll_my_address)
     LinearLayout ll_address;
     @BindView(R.id.iv_my_img)
@@ -46,6 +50,15 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.tv_my_head_mark)
     TextView tv_Mark;
 
+    //懒加载
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            initData();
+            initLogin();
+        }
+    }
 
     @Override
     protected int getLayout() {
@@ -53,12 +66,13 @@ public class MeFragment extends BaseFragment {
     }
 
     @Override
-    protected IBasePersenter createPrenter() {
-        return null;
+    protected ILogout.Presenter createPrenter() {
+        return new LogoutPresenter(this);
     }
 
     @Override
     protected void initView() {
+
     }
 
     @OnClick({R.id.ll_my_address, R.id.ll_five_collect, R.id.iv_my_img, R.id.iv_my_return, R.id.tv_my_login})
@@ -77,23 +91,14 @@ public class MeFragment extends BaseFragment {
                 startActivity(intent2);
                 break;
             case R.id.iv_my_return://退出登录
-                loginOut();
+                presenter.postLogout();
                 break;
-            case R.id.tv_my_login://退出登录
+            case R.id.tv_my_login://登录
                 initLogin();
                 break;
         }
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOGIN_ME && resultCode == 100) {
-            String name = data.getStringExtra("name");//登录之后显示名字
-            tv_Login.setText(name);
-        }
-    }
 
     //判断是否登录
     private void initLogin() {
@@ -103,18 +108,6 @@ public class MeFragment extends BaseFragment {
         } else {
             openLogin();//为空 进行登录
         }
-    }
-
-    //TODO 退出登录
-    private void loginOut() {
-        //清空Sp
-        SpUtils.getInstance().delete();
-
-        //退出登录
-        ActivityCollectorUtil.finishAllActivity();
-
-        //关闭页面
-       // finishAndRemoveTask();
     }
 
     //TODO 打开登录页面
@@ -173,10 +166,27 @@ public class MeFragment extends BaseFragment {
     @Override
     protected void initData() {
         String token = SpUtils.getInstance().getString("token");
+        //如果token不为空
         if (!TextUtils.isEmpty(token)) {
             isLogin(true);
         } else {
             isLogin(false);
         }
+    }
+
+    //TODO 退出登录
+    @Override
+    public void postLogoutReturn(LogoutBean result) {
+        SpUtils.getInstance().remove("token");
+
+        //清空Sp
+        //SpUtils.getInstance().delete();
+
+        //退出登录
+        ActivityCollectorUtil.finishAllActivity();
+
+        //关闭页面
+        // finishAndRemoveTask();
+        isLogin(false);
     }
 }

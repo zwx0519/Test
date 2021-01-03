@@ -119,7 +119,9 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
         ImageView one_img = inclue_one.findViewById(R.id.iv_head_portrait_img);
         ImageView three_img = inclue_three.findViewById(R.id.iv_head_portrait_img);
 
+        //登录保存的用户名
         String name = SpUtils.getInstance().getString("name");
+
         String txtName = (String) MyApp.getMap().get("txtName");
         String Mark = (String) MyApp.getMap().get("txtMark");
 
@@ -272,7 +274,6 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + requestCode);

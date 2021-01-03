@@ -44,8 +44,8 @@ public class HttpManager {
     static class LoggingInterceptor implements Interceptor{
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            Response response = chain.proceed(request);
+            Request request = chain.request();//Request请求的地址 参数等
+            Response response = chain.proceed(request);// Response回复的请求
             ResponseBody responseBody = response.peekBody(Integer.MAX_VALUE);
             Log.i("responseBody",responseBody.string());
             return response;

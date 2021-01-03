@@ -30,6 +30,7 @@ public class JumpFragment extends Fragment implements View.OnClickListener{
     TextView txtTime;
     @BindView(R.id.txt_comein)//立即体验
     TextView txtComeIn;
+    public boolean isUpdate;
 
     private static int time = 15; //15-10区间不能跳过 < 10 可以跳过
 
@@ -113,6 +114,7 @@ public class JumpFragment extends Fragment implements View.OnClickListener{
 
     //TODO 跳转到主页
     private void goMain() {
+        if(isUpdate) return;
         live=false;
         Intent intent = new Intent(getContext(), ShopActivity.class);
         startActivity(intent);

@@ -1,5 +1,6 @@
 package com.example.test.model.api;
 
+import com.example.test.model.bean.shop.AppBean;
 import com.example.test.model.bean.shop.home.HomeBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameBean;
 import com.example.test.model.bean.shop.home.brand.BrandNameDetailBean;
@@ -11,6 +12,7 @@ import com.example.test.model.bean.shop.home.channel.ChannelTypeBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsBean;
 import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.login.LoginBean;
+import com.example.test.model.bean.shop.login.LogoutBean;
 import com.example.test.model.bean.shop.login.RegisterBean;
 import com.example.test.model.bean.shop.me.address.AddressCityBean;
 import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
@@ -135,4 +137,12 @@ public interface ApiService {
     @POST("api/user/updateUserInfo")
     @FormUrlEncoded
     Flowable<HeadPortraitBean> postUpdateUserInfo(@FieldMap HashMap<String,String> map);
+
+    //版本更新
+    @GET("api/apk/appinfo")
+    Flowable<AppBean> getAppInfo();
+
+    //退出登录
+    @POST("api/auth/logout")
+    Flowable<LogoutBean> postlogout();
 }

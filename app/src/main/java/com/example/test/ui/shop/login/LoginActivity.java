@@ -85,9 +85,6 @@ public class LoginActivity extends BaseActivity<ILogin.Presenter> implements ILo
             SpUtils.getInstance().setValue("uid", result.getData().getUserInfo().getUid());
 
             String name = et_Username.getText().toString();
-            Intent intent = getIntent();
-            intent.putExtra("name",name);
-            setResult(100,intent);
             SpUtils.getInstance().setValue("username",name);
 
             finishAndRemoveTask();//关闭当前页面返回之前页面+

@@ -9,7 +9,7 @@ import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
 import com.example.test.view.shop.me.address.IAddress;
 
 import java.util.HashMap;
-
+//TODO 更该用户信息
 public interface IUpdateUserInfo {
 
     interface View extends IBaseView {
