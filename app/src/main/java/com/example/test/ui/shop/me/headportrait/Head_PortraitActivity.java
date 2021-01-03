@@ -119,7 +119,7 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
         ImageView one_img = inclue_one.findViewById(R.id.iv_head_portrait_img);
         ImageView three_img = inclue_three.findViewById(R.id.iv_head_portrait_img);
 
-        //登录保存的用户名
+        //登录的用户名
         String name = SpUtils.getInstance().getString("name");
 
         String txtName = (String) MyApp.getMap().get("txtName");
@@ -169,15 +169,15 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
                 btn_Save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String markName = et_Input.getText().toString();
-                        if (!TextUtils.isEmpty(markName)) {
+                        String avatar = et_Input.getText().toString();
+                        if (!TextUtils.isEmpty(avatar)) {
                             HashMap<String, String> map = new HashMap<>();
-                            map.put("mark", markName);
+                            map.put("avatar", avatar);
                             persenter.postUpdateUserInfo(map);
                             layoutInput.setVisibility(View.GONE);
-                            SpUtils.getInstance().remove("mark");
-                            SpUtils.getInstance().setValue("mark", markName);
-                            mark.setText(markName);
+                            SpUtils.getInstance().remove("avatar");
+                            SpUtils.getInstance().setValue("avatar", avatar);
+                            mark.setText(avatar);
                             et_Input.setText("");
                         }
                     }
@@ -274,6 +274,7 @@ public class Head_PortraitActivity extends BaseActivity<IUpdateUserInfo.Presente
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + requestCode);

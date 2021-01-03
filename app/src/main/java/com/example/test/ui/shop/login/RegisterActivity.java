@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,9 +65,17 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
         //验证码
         Bitmap bitmap = CodeUtils.getInstance().createBitmap();
         iv_Code_Img.setImageBitmap(bitmap);
+
+        Button btn_register=findViewById(R.id.btn_register);
+        btn_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initRegist();
+            }
+        });
     }
 
-    @OnClick({R.id.iv_register_code_img, R.id.btn_register})
+    @OnClick({R.id.iv_register_code_img})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_register_code_img:
@@ -74,9 +83,9 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
                 Bitmap bitmap = CodeUtils.getInstance().createBitmap();
                 iv_Code_Img.setImageBitmap(bitmap);
                 break;
-            case R.id.btn_register:
-                initRegist();
-                break;
+//            case R.id.btn_register:
+//              , R.id.btn_register
+//                break;
         }
     }
 
@@ -102,7 +111,8 @@ public class RegisterActivity extends BaseActivity<IRegister.Presenter> implemen
                         //判断sp中是否有存入的username
                         if (!TextUtils.isEmpty(string)){     //如果有存入的
                             //用户名已经注册
-                            ToastUtils.s(this,getString(R.string.tips_regist_re));
+                            //ToastUtils.s(this,getString(R.string.tips_regist_re));
+                            Toast.makeText(this,getString(R.string.tips_regist_re) , Toast.LENGTH_SHORT).show();
                             return;
                         }else{     //没有存入的
                             //1.注册

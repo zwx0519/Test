@@ -60,6 +60,13 @@ public class MeFragment extends BaseFragment<ILogout.Presenter> implements ILogo
         }
     }
 
+    //立即加载
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_me;
@@ -148,8 +155,9 @@ public class MeFragment extends BaseFragment<ILogout.Presenter> implements ILogo
             } else {
                 tv_Name.setText(username);
             }
-            ImageLoaderUtils.loadImage(avatar, iv_Img);
-            TxtUtils.setTextView(tv_Mark, mark);
+            ImageLoaderUtils.loadImage(mark, iv_Img);
+            //名字
+            TxtUtils.setTextView(tv_Mark, avatar);
             String img = SpUtils.getInstance().getString("img");
             if (!TextUtils.isEmpty(img)) {
                 //上传头像后选择头像并返回
