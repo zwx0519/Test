@@ -2,6 +2,7 @@ package com.example.test.model.bean.shop.me.address;
 
 import java.util.List;
 
+//获取省市区的数据
 public class AddressCityBean {
     /**
      * errno : 0

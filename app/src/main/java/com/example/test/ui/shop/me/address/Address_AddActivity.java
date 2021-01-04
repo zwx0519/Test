@@ -26,6 +26,7 @@ import com.example.test.app.MyApp;
 import com.example.test.base.BaseActivity;
 import com.example.test.base.BaseAdapter;
 import com.example.test.db.DaoSession;
+import com.example.test.model.bean.shop.me.address.AddressBean;
 import com.example.test.model.bean.shop.me.address.AddressCityBean;
 import com.example.test.model.bean.shop.me.address.User;
 import com.example.test.presenter.shop.me.address.AddressCityPresenter;
@@ -341,6 +342,12 @@ public class Address_AddActivity extends BaseActivity<IAddress.Presenter> implem
         List<AddressCityBean.DataBean> data = result.getData();
         list.addAll(data);
         addressCityAdpter.notifyDataSetChanged();
+    }
+
+    //TODO 添加地址
+    @Override
+    public void postAddressReturn(AddressBean result) {
+
     }
 
     //TODO 内部视频器

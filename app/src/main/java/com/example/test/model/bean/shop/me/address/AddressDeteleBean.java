@@ -1,16 +1,15 @@
 package com.example.test.model.bean.shop.me.address;
 
-//添加地址
-public class AddressBean {
+public class AddressDeteleBean {
     /**
      * errno : 0
      * errmsg :
-     * data : {}
+     * data : 删除成功
      */
 
     private int errno;
     private String errmsg;
-    private DataBean data;
+    private String data;
 
     public int getErrno() {
         return errno;
@@ -28,14 +27,11 @@ public class AddressBean {
         this.errmsg = errmsg;
     }
 
-    public DataBean getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(String data) {
         this.data = data;
-    }
-
-    public static class DataBean {
     }
 }

@@ -14,7 +14,10 @@ import com.example.test.model.bean.shop.home.newgoods.NewGoodsListBean;
 import com.example.test.model.bean.shop.login.LoginBean;
 import com.example.test.model.bean.shop.login.LogoutBean;
 import com.example.test.model.bean.shop.login.RegisterBean;
+import com.example.test.model.bean.shop.me.address.AddressBean;
 import com.example.test.model.bean.shop.me.address.AddressCityBean;
+import com.example.test.model.bean.shop.me.address.AddressDeteleBean;
+import com.example.test.model.bean.shop.me.address.AddressListBean;
 import com.example.test.model.bean.shop.me.headportrait.HeadPortraitBean;
 import com.example.test.model.bean.shop.shoppingcar.AddShoppingCarBean;
 import com.example.test.model.bean.shop.shoppingcar.DeleteShoppingCarBean;
@@ -132,6 +135,21 @@ public interface ApiService {
     //获取地址
     @GET("api/region/list")
     Flowable<AddressCityBean> getAddressCity(@Query("parentId") int parentId);
+
+    //地址收货列表
+    @GET("api/address/list")
+    Flowable<AddressListBean> getAddressList();
+
+    //添加地址
+    @POST("api/address/save")
+    @FormUrlEncoded
+    Flowable<AddressBean> postAddress(@FieldMap HashMap<String,String> map);
+
+    //删除地址
+    @POST("api/address/delete")
+    @FormUrlEncoded
+    Flowable<AddressDeteleBean> postDeleteAddress(@Field("id") String productIds);
+
 
     //用户信息更新
     @POST("api/user/updateUserInfo")
