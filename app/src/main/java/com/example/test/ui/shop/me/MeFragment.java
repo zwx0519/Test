@@ -7,14 +7,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.test.R;
 import com.example.test.app.MyApp;
 import com.example.test.base.BaseFragment;
-import com.example.test.base.IBasePersenter;
 import com.example.test.model.bean.shop.login.LogoutBean;
 import com.example.test.presenter.shop.login.LogoutPresenter;
 import com.example.test.ui.shop.login.LoginActivity;
@@ -27,7 +24,7 @@ import com.example.test.utils.SpUtils;
 import com.example.test.utils.ToastUtils;
 import com.example.test.utils.TxtUtils;
 import com.example.test.view.shop.login.ILogout;
-import com.example.test.view.shop.me.headportrait.IUpdateUserInfo;
+import com.live.ui.RoomActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,7 +79,7 @@ public class MeFragment extends BaseFragment<ILogout.Presenter> implements ILogo
 
     }
 
-    @OnClick({R.id.ll_my_address, R.id.ll_five_collect, R.id.iv_my_img, R.id.iv_my_return, R.id.tv_my_login})
+    @OnClick({R.id.ll_my_address, R.id.ll_five_collect, R.id.iv_my_img, R.id.iv_my_return, R.id.tv_my_login,R.id.ll_my_live})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_my_address://地址管理
@@ -103,11 +100,20 @@ public class MeFragment extends BaseFragment<ILogout.Presenter> implements ILogo
             case R.id.tv_my_login://登录
                 initLogin();
                 break;
+            case R.id.ll_my_live://直播
+                initLive();
+                break;
         }
     }
 
+    //TODO 直播
+    private void initLive() {
+        Intent intent = new Intent(getActivity(), RoomActivity.class);
+        startActivity(intent);
+    }
 
-    //判断是否登录
+
+    //TODO 判断是否登录
     private void initLogin() {
         String token = SpUtils.getInstance().getString("token");
         if (!TextUtils.isEmpty(token)) {

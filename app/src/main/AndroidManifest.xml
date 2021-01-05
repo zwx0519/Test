@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.shop.special.DiscussActivity"></activity>
+        <activity android:name=".ui.shop.special.DiscussActivity" />
         <activity
             android:name=".ui.shop.me.headportrait.Head_PortraitActivity"
             android:windowSoftInputMode="adjustResize" />

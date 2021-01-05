@@ -1,2 +1,4 @@
+include ':base-utils'
+include ':mylibrary'
 include ':app'
 rootProject.name = "Test"
